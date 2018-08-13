@@ -17,7 +17,7 @@ namespace Snake
         FoodManager FoodMngr;
         Random r = new Random();
         private int score = 0;
-        public SnakeForm()
+        public SnakeForm(bool twoPlayer)
         {
             InitializeComponent();
             Application.AddMessageFilter(this);

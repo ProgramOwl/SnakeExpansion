@@ -8,3 +8,14 @@ C:\Users\SWaugh\Desktop\Snake-master\Snake\obj\Debug\Snake.csproj.GenerateResour
 C:\Users\SWaugh\Desktop\Snake-master\Snake\obj\Debug\Snake.csproj.CoreCompileInputs.cache
 C:\Users\SWaugh\Desktop\Snake-master\Snake\obj\Debug\Snake.exe
 C:\Users\SWaugh\Desktop\Snake-master\Snake\obj\Debug\Snake.pdb
+C:\Users\Collin\Documents\ExistingWhatever\Snake\SnakeExpansion\Snake-master\Snake\bin\Debug\Snake.exe.config
+C:\Users\Collin\Documents\ExistingWhatever\Snake\SnakeExpansion\Snake-master\Snake\bin\Debug\Snake.exe
+C:\Users\Collin\Documents\ExistingWhatever\Snake\SnakeExpansion\Snake-master\Snake\bin\Debug\Snake.pdb
+C:\Users\Collin\Documents\ExistingWhatever\Snake\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.csprojAssemblyReference.cache
+C:\Users\Collin\Documents\ExistingWhatever\Snake\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.SnakeForm.resources
+C:\Users\Collin\Documents\ExistingWhatever\Snake\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.Properties.Resources.resources
+C:\Users\Collin\Documents\ExistingWhatever\Snake\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.csproj.GenerateResource.cache
+C:\Users\Collin\Documents\ExistingWhatever\Snake\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.csproj.CoreCompileInputs.cache
+C:\Users\Collin\Documents\ExistingWhatever\Snake\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.exe
+C:\Users\Collin\Documents\ExistingWhatever\Snake\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.pdb
+C:\Users\Collin\Documents\ExistingWhatever\Snake\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.Startscreen.resources

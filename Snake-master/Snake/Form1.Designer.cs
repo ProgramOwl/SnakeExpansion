@@ -43,7 +43,7 @@
             this.GameCanvas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.GameCanvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.GameCanvas.Location = new System.Drawing.Point(7, 6);
-            this.GameCanvas.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.GameCanvas.Margin = new System.Windows.Forms.Padding(6);
             this.GameCanvas.Name = "GameCanvas";
             this.GameCanvas.Size = new System.Drawing.Size(994, 737);
             this.GameCanvas.TabIndex = 0;
@@ -57,7 +57,7 @@
             // Start_Btn
             // 
             this.Start_Btn.Location = new System.Drawing.Point(1016, 24);
-            this.Start_Btn.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Start_Btn.Margin = new System.Windows.Forms.Padding(6);
             this.Start_Btn.Name = "Start_Btn";
             this.Start_Btn.Size = new System.Drawing.Size(376, 42);
             this.Start_Btn.TabIndex = 1;
@@ -68,7 +68,7 @@
             // DareBtn
             // 
             this.DareBtn.Location = new System.Drawing.Point(1014, 700);
-            this.DareBtn.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.DareBtn.Margin = new System.Windows.Forms.Padding(6);
             this.DareBtn.Name = "DareBtn";
             this.DareBtn.Size = new System.Drawing.Size(378, 42);
             this.DareBtn.TabIndex = 2;
@@ -80,7 +80,7 @@
             // 
             this.ScoreTxtBox.Enabled = false;
             this.ScoreTxtBox.Location = new System.Drawing.Point(1096, 78);
-            this.ScoreTxtBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ScoreTxtBox.Margin = new System.Windows.Forms.Padding(6);
             this.ScoreTxtBox.Name = "ScoreTxtBox";
             this.ScoreTxtBox.ReadOnly = true;
             this.ScoreTxtBox.Size = new System.Drawing.Size(292, 29);
@@ -106,7 +106,7 @@
             this.Controls.Add(this.DareBtn);
             this.Controls.Add(this.Start_Btn);
             this.Controls.Add(this.GameCanvas);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "SnakeForm";
             this.Text = "Snake";
             ((System.ComponentModel.ISupportInitialize)(this.GameCanvas)).EndInit();
