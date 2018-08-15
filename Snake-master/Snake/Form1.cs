@@ -323,30 +323,93 @@ namespace Snake
         */
         //end
 
-        private void SetPlayerMovement()
+        private void SetPlayerMovement(bool controlsSwapped, bool twoPlayer)
         {
-            if (Input.IsKeyDown(Keys.Left))
+            if (!twoPlayer)
             {
-                Player1.SetDirection(Direction.left);
+                if(!controlsSwapped)
+                {
+                    if (Input.IsKeyDown(Keys.Left))
+                    {
+                        Player1.SetDirection(Direction.left);
+                    }
+                    else if (Input.IsKeyDown(Keys.Right))
+                    {
+                        Player1.SetDirection(Direction.right);
+                    }
+                    else if (Input.IsKeyDown(Keys.Up))
+                    {
+                        Player1.SetDirection(Direction.up);
+                    }
+                    else if (Input.IsKeyDown(Keys.Down))
+                    {
+                        Player1.SetDirection(Direction.down);
+                    }
+                }
+                else
+                {
+                    if (Input.IsKeyDown(Keys.A))
+                    {
+                        Player1.SetDirection(Direction.left);
+                    }
+                    else if (Input.IsKeyDown(Keys.D))
+                    {
+                        Player1.SetDirection(Direction.right);
+                    }
+                    else if (Input.IsKeyDown(Keys.W))
+                    {
+                        Player1.SetDirection(Direction.up);
+                    }
+                    else if (Input.IsKeyDown(Keys.S))
+                    {
+                        Player1.SetDirection(Direction.down);
+                    }
+                }
+                Player1.MovePlayer();
             }
-            else if (Input.IsKeyDown(Keys.Right))
+            else
             {
-                Player1.SetDirection(Direction.right);
+                if (Input.IsKeyDown(Keys.Left))
+                {
+                    Player1.SetDirection(Direction.left);
+                }
+                else if (Input.IsKeyDown(Keys.Right))
+                {
+                    Player1.SetDirection(Direction.right);
+                }
+                else if (Input.IsKeyDown(Keys.Up))
+                {
+                    Player1.SetDirection(Direction.up);
+                }
+                else if (Input.IsKeyDown(Keys.Down))
+                {
+                    Player1.SetDirection(Direction.down);
+                }
+                Player1.MovePlayer();
+
+                if (Input.IsKeyDown(Keys.A))
+                {
+                    Player2.SetDirection(Direction.left);
+                }
+                else if (Input.IsKeyDown(Keys.D))
+                {
+                    Player2.SetDirection(Direction.right);
+                }
+                else if (Input.IsKeyDown(Keys.W))
+                {
+                    Player2.SetDirection(Direction.up);
+                }
+                else if (Input.IsKeyDown(Keys.S))
+                {
+                    Player2.SetDirection(Direction.down);
+                }
+                Player2.MovePlayer();
             }
-            else if (Input.IsKeyDown(Keys.Up))
-            {
-                Player1.SetDirection(Direction.up);
-            }
-            else if (Input.IsKeyDown(Keys.Down))
-            {
-                Player1.SetDirection(Direction.down);
-            }
-            Player1.MovePlayer();
         }
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            SetPlayerMovement();
+            SetPlayerMovement(false, is2Player);
             CheckForCollisions();
             GameCanvas.Invalidate();
         }
