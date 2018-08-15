@@ -14,7 +14,7 @@ namespace Snake
     public partial class SnakeForm : Form, IMessageFilter
     {
         /*Sam*/
-        //TODO: 
+        //TODO : 
         //-add spawn location system, 
         //-Have a Player2 score display
         //-test that current code works (would need to add p2 controls though)
@@ -26,6 +26,7 @@ namespace Snake
             ColorSets[0, 0] = Brushes.Black;
             ColorSets[0, 1] = Brushes.Lavender;
             ColorSets[0, 2] = Brushes.MistyRose;
+
             ColorSets[1, 0] = Brushes.CornflowerBlue;
             ColorSets[1, 1] = Brushes.PeachPuff;
             ColorSets[1, 2] = Brushes.LawnGreen;
@@ -53,7 +54,7 @@ namespace Snake
             BuildBrush();
             if (is2Player)
             {
-                Player2 = new SnakePlayer(this);
+                Player2 = new SnakePlayer(this, 0, 80, Direction.down);
                 Player2.SetColor(ColorSets[1, 0]);
             }
             //end
@@ -78,7 +79,7 @@ namespace Snake
             if (is2Player)
             {
                 x = Player2.GetColor();
-                Player2 = new SnakePlayer(this);
+                Player2 = new SnakePlayer(this, 0, 80, Direction.down);
                 Player2.SetColor(x);
             }
             //end
@@ -151,12 +152,12 @@ namespace Snake
 
                 SnakeBodyRects1.RemoveAt(0);
                 SnakeBodyRects2.RemoveAt(0);
-                //TODO: Check that the heads still have the right values 
+                //TODO : Check that the heads still have the right values 
 
                 bool opposites = AreCounter();
                 bool snakesCollided = false;
                 String CollisionMessage = "";
-                //TODO: End conditions maybe changed later on
+                //TODO : End conditions maybe changed later on
 
                 //Head Collision:
                 if (opposites && (SnakeHead1 == SnakeHead2))
@@ -250,7 +251,7 @@ namespace Snake
                     if (Player2.IsIntersectingRect(new Rectangle(0, GameCanvas.Height, GameCanvas.Width, 100)))
                         Player2.OnHitWall(Direction.down);
 
-                    //TODO: Check the run of the food collision in case of miss earned points, though if killed from collision point get reset so should be fine
+                    //TODO : Check the run of the food collision in case of miss earned points, though if killed from collision point get reset so should be fine
 
                     //food collision
                     List<Rectangle> SnakeRects2 = Player2.GetRects();
@@ -289,7 +290,7 @@ namespace Snake
 
             return oppositeDirections;
         }
-        //TODO: need to check if these actually pass the update through to the actual player: if so the use them to reduce redundency
+        //TODO : need to check if these actually pass the update through to the actual player: if so the use them to reduce redundency
         /*
         private void CheckForWallCollision(SnakePlayer snakeX)
         {
@@ -357,7 +358,7 @@ namespace Snake
 
         private void DareBtn_Click(object sender, EventArgs e)
         {
-            //TODO: maybe remove or make invalid after a set number of press or while game is paused?
+            //TODO : maybe remove or make invalid after a set number of press or while game is paused?
             int index = r.Next(4);
             switch(index)
             {
@@ -366,7 +367,7 @@ namespace Snake
                     break;
               case 1:
                     MessageBox.Show("This is a dark path you are on");
-                    //TODO: Maybe make the canvas go dark?
+                    //TODO : Maybe make the canvas go dark?
                     break;
               case 2:
                     MessageBox.Show("I knew you wouldn't listen");
