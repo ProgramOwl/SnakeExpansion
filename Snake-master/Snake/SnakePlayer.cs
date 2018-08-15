@@ -31,6 +31,132 @@ namespace Snake
         private int m_PendingSegments; // Number of body parts in queue to be added to the snake
         private SnakeForm GameForm = null; // Stores the GUI form
 
+        //Sam
+        private Brush SnakeColor = Brushes.Black; // Color constant for individual snake
+        private int SnakeScore = 0; // Point constant for individual snake
+
+        public void SetColor(Brush color)
+        {
+            SnakeColor = color;
+        }
+        public Brush GetColor()
+        {
+            return SnakeColor;
+        }
+        public void SetScore(int score)
+        {
+            SnakeScore = score;
+        }
+        public void UpdateScore(int score)
+        {
+            SnakeScore += score;
+        }
+        public int GetScore()
+        {
+            return SnakeScore;
+        }
+        //get the current direction
+        public String GetCurrentDirection()
+        {
+            String direc = "";
+            if (m_MoveDirection == Direction.left)
+                direc = "left";
+            else if (m_MoveDirection == Direction.right)
+                direc = "right";
+            else if (m_MoveDirection == Direction.up)
+                direc = "up";
+            else if (m_MoveDirection == Direction.down)
+                direc = "down";
+            
+            return direc;
+        }
+
+        private void SetSpawnBody(int startX, int startY, Direction dir)
+        {
+            int maxX = 300;
+            int maxY = 300;
+            int y = startY;
+            int x = startX;
+
+            if (dir == Direction.right)
+            {
+                x = (x < 60) ? 60 : x;
+                x = (x > (maxX - 60)) ? (maxX - 60) : x;
+                m_SnakeParts.Add(new BodyPart(x, y, dir));
+                m_SnakeParts.Add(new BodyPart(x-20, y, dir));
+                m_SnakeParts.Add(new BodyPart(x-40, y, dir));
+            }
+            else if (dir == Direction.left)
+            {
+                x = (x < 60) ? 60 : x;
+                x = (x > (maxX - 60)) ? (maxX - 60) : x;
+                m_SnakeParts.Add(new BodyPart(x, y, dir));
+                m_SnakeParts.Add(new BodyPart(x + 20, y, dir));
+                m_SnakeParts.Add(new BodyPart(x + 40, y, dir));
+            }
+            else if (dir == Direction.down)
+            {
+                y = (y < 60) ? 60 : y;
+                y = (y > (maxY - 60)) ? (maxY - 60) : y;
+                m_SnakeParts.Add(new BodyPart(x, y, dir));
+                m_SnakeParts.Add(new BodyPart(x, y - 20, dir));
+                m_SnakeParts.Add(new BodyPart(x, y - 40, dir));
+            }
+            else if (dir == Direction.up)
+            {
+                y = (y < 60) ? 60 : y;
+                y = (y > (maxY - 60)) ? (maxY - 60) : y;
+                m_SnakeParts.Add(new BodyPart(x, y, dir));
+                m_SnakeParts.Add(new BodyPart(x, y + 20, dir));
+                m_SnakeParts.Add(new BodyPart(x, y + 40, dir));
+            }
+        }
+        //alt:
+        /*public void SetSpawnBody2(int start, String dir)
+        {
+            int max = 300;
+            int s = (start < 60) ? 60 : start;
+            s = (s > (max - 60)) ? (max - 60) : s;
+
+            if (dir == "right")
+            {
+                m_SnakeParts.Add(new BodyPart(s, 0, Direction.right));
+                m_SnakeParts.Add(new BodyPart(s - 20, 0, Direction.right));
+                m_SnakeParts.Add(new BodyPart(s - 40, 0, Direction.right));
+            }
+            else if (dir == "left")
+            {
+                m_SnakeParts.Add(new BodyPart(s, 0, Direction.left));
+                m_SnakeParts.Add(new BodyPart(s + 20, 0, Direction.left));
+                m_SnakeParts.Add(new BodyPart(s + 40, 0, Direction.left));
+            }
+            else if (dir == "down")
+            {
+                m_SnakeParts.Add(new BodyPart(0, s, Direction.down));
+                m_SnakeParts.Add(new BodyPart(0, s - 20, Direction.down));
+                m_SnakeParts.Add(new BodyPart(0, s - 40, Direction.down));
+            }
+            else if (dir == "up")
+            {
+                m_SnakeParts.Add(new BodyPart(0, s, Direction.up));
+                m_SnakeParts.Add(new BodyPart(0, s + 20, Direction.up));
+                m_SnakeParts.Add(new BodyPart(0, s + 40, Direction.up));
+            }
+
+        }*/
+        //End
+        public SnakePlayer(SnakeForm Form, int startX, int startY, Direction dir)
+        {
+            // Add 3 body parts to the snake because the snake begins small
+            SetSpawnBody(startX, startY, dir);
+
+            // Need to give an initial direction
+            m_MoveDirection = dir;
+
+            // Currently no body parts queued to be added
+            m_PendingSegments = 0;
+            GameForm = Form;
+        }
         /// <summary>
         /// Object constructor
         /// </summary>
@@ -173,6 +299,7 @@ namespace Snake
             return false;
         }
 
+        //TODO: update so as not to end game immidiatly
         /// <summary>
         /// Displays the game-over screen in the case that the player hits the wall
         /// </summary>
@@ -190,7 +317,6 @@ namespace Snake
         /// <param name="canvas">The graphics object to render on</param>
         public void Draw(Graphics canvas)
         {
-            Brush SnakeColor = Brushes.Black;
             List<Rectangle> Rects = GetRects(); // Get the snake body parts, represented as rectangles
             foreach(Rectangle Part in Rects) // Draw each snake body part
             {
@@ -198,6 +324,7 @@ namespace Snake
             }
         }
 
+        //TODO: update so as not to end game immidiatly
         /// <summary>
         /// Displays the game-over screen in the case that the player hits themself
         /// </summary>
