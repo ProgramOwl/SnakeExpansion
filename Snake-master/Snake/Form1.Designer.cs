@@ -109,6 +109,7 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "SnakeForm";
             this.Text = "Snake";
+            this.Load += new System.EventHandler(this.SnakeForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.GameCanvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

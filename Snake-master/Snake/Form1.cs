@@ -11,15 +11,17 @@ using System.Diagnostics;
 
 namespace Snake
 {
-    public partial class SnakeForm : Form,IMessageFilter
+    public partial class SnakeForm : Form, IMessageFilter
     {
         SnakePlayer Player1;
+        SnakePlayer Player2;
         FoodManager FoodMngr;
         Random r = new Random();
         private int score = 0;
         public SnakeForm(bool twoPlayer)
         {
             InitializeComponent();
+            isTwoPlayer = twoPlayer;
             Application.AddMessageFilter(this);
             this.FormClosed += (s, e) => Application.RemoveMessageFilter(this);
             Player1 = new SnakePlayer(this);
@@ -43,14 +45,14 @@ namespace Snake
 
         public bool PreFilterMessage(ref Message msg)
         {
-            if(msg.Msg == 0x0101) //KeyUp
+            if (msg.Msg == 0x0101) //KeyUp
                 Input.SetKey((Keys)msg.WParam, false);
             return false;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if(msg.Msg == 0x100) //KeyDown
+            if (msg.Msg == 0x100) //KeyDown
                 Input.SetKey((Keys)msg.WParam, true);
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -78,9 +80,9 @@ namespace Snake
 
             //Is hitting food
             List<Rectangle> SnakeRects = Player1.GetRects();
-            foreach(Rectangle rect in SnakeRects)
+            foreach (Rectangle rect in SnakeRects)
             {
-                if(FoodMngr.IsIntersectingRect(rect,true))
+                if (FoodMngr.IsIntersectingRect(rect, true))
                 {
                     FoodMngr.AddRandomFood();
                     Player1.AddBodySegments(1);
@@ -90,30 +92,93 @@ namespace Snake
             }
         }
 
-        private void SetPlayerMovement()
+        private void SetPlayerMovement(bool controlsSwapped, bool twoPlayer)
         {
-            if (Input.IsKeyDown(Keys.Left))
+            if (!twoPlayer)
             {
-                Player1.SetDirection(Direction.left);
+                if (!controlsSwapped)
+                {
+                    if (Input.IsKeyDown(Keys.Left))
+                    {
+                        Player1.SetDirection(Direction.left);
+                    }
+                    else if (Input.IsKeyDown(Keys.Right))
+                    {
+                        Player1.SetDirection(Direction.right);
+                    }
+                    else if (Input.IsKeyDown(Keys.Up))
+                    {
+                        Player1.SetDirection(Direction.up);
+                    }
+                    else if (Input.IsKeyDown(Keys.Down))
+                    {
+                        Player1.SetDirection(Direction.down);
+                    }
+                }
+                else
+                {
+                    if (Input.IsKeyDown(Keys.A))
+                    {
+                        Player1.SetDirection(Direction.left);
+                    }
+                    else if (Input.IsKeyDown(Keys.D))
+                    {
+                        Player1.SetDirection(Direction.right);
+                    }
+                    else if (Input.IsKeyDown(Keys.W))
+                    {
+                        Player1.SetDirection(Direction.up);
+                    }
+                    else if (Input.IsKeyDown(Keys.S))
+                    {
+                        Player1.SetDirection(Direction.down);
+                    }
+                }
+                Player1.MovePlayer();
             }
-            else if (Input.IsKeyDown(Keys.Right))
+            else
             {
-                Player1.SetDirection(Direction.right);
-            }
-            else if (Input.IsKeyDown(Keys.Up))
-            {
-                Player1.SetDirection(Direction.up);
-            }
-            else if (Input.IsKeyDown(Keys.Down))
-            {
-                Player1.SetDirection(Direction.down);
+                if (Input.IsKeyDown(Keys.Left))
+                {
+                    Player1.SetDirection(Direction.left);
+                }
+                else if (Input.IsKeyDown(Keys.Right))
+                {
+                    Player1.SetDirection(Direction.right);
+                }
+                else if (Input.IsKeyDown(Keys.Up))
+                {
+                    Player1.SetDirection(Direction.up);
+                }
+                else if (Input.IsKeyDown(Keys.Down))
+                {
+                    Player1.SetDirection(Direction.down);
+                }
+
+                if (Input.IsKeyDown(Keys.A))
+                {
+                    Player2.SetDirection(Direction.left);
+                }
+                else if (Input.IsKeyDown(Keys.D))
+                {
+                    Player2.SetDirection(Direction.right);
+                }
+                else if (Input.IsKeyDown(Keys.W))
+                {
+                    Player2.SetDirection(Direction.up);
+                }
+                else if (Input.IsKeyDown(Keys.S))
+                {
+                    Player2.SetDirection(Direction.down);
+                }
             }
             Player1.MovePlayer();
+            Player2.MovePlayer();
         }
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            SetPlayerMovement();
+            SetPlayerMovement(false, isTwoPlayer);
             CheckForCollisions();
             GameCanvas.Invalidate();
         }
@@ -126,18 +191,18 @@ namespace Snake
         private void DareBtn_Click(object sender, EventArgs e)
         {
             int index = r.Next(4);
-            switch(index)
+            switch (index)
             {
-              case 0:
+                case 0:
                     MessageBox.Show("How dare you listen");
                     break;
-              case 1:
+                case 1:
                     MessageBox.Show("This is a dark path you are on");
                     break;
-              case 2:
+                case 2:
                     MessageBox.Show("I knew you wouldn't listen");
                     break;
-              case 3:
+                case 3:
                     MessageBox.Show("Have some food :)");
                     FoodMngr.AddRandomFood(20);
                     GameCanvas.Invalidate();
@@ -145,6 +210,11 @@ namespace Snake
                 default:
                     break;
             }
+        }
+
+        private void SnakeForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
