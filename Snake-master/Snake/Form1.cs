@@ -48,10 +48,10 @@ namespace Snake
             InitializeComponent();
             Application.AddMessageFilter(this);
             this.FormClosed += (s, e) => Application.RemoveMessageFilter(this);
-            Player1 = new SnakePlayer(this);
             //Sam
             is2Player = twoPlayer;
             BuildBrush();
+            Player1 = new SnakePlayer(this, 80, 0, Direction.right);
             if (is2Player)
             {
                 Player2 = new SnakePlayer(this, 0, 80, Direction.down);
@@ -73,7 +73,7 @@ namespace Snake
             //Player1 = new SnakePlayer(this);
             //Sam
             Brush x = Player1.GetColor();
-            Player1 = new SnakePlayer(this);
+            Player1 = new SnakePlayer(this, 80, 0, Direction.right);
             Player1.SetColor(x);
 
             if (is2Player)
@@ -90,14 +90,14 @@ namespace Snake
 
         public bool PreFilterMessage(ref Message msg)
         {
-            if(msg.Msg == 0x0101) //KeyUp
+            if (msg.Msg == 0x0101) //KeyUp
                 Input.SetKey((Keys)msg.WParam, false);
             return false;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if(msg.Msg == 0x100) //KeyDown
+            if (msg.Msg == 0x100) //KeyDown
                 Input.SetKey((Keys)msg.WParam, true);
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -117,6 +117,7 @@ namespace Snake
 
         private void CheckForCollisions()
         {
+            /*
             if (Player1.IsIntersectingRect(new Rectangle(-100, 0, 100, GameCanvas.Height)))
                 Player1.OnHitWall(Direction.left);
 
@@ -140,94 +141,14 @@ namespace Snake
                     score++;
                     ScoreTxtBox.Text = score.ToString();
                 }
-            }
+            }*/
             //Sam
             if (is2Player)
             {
-                //collision between snakes
-                List<Rectangle> SnakeBodyRects1 = Player1.GetRects();
-                List<Rectangle> SnakeBodyRects2 = Player2.GetRects();
-                Rectangle SnakeHead1 = SnakeBodyRects1.ElementAt(0);
-                Rectangle SnakeHead2 = SnakeBodyRects2.ElementAt(0);
 
-                SnakeBodyRects1.RemoveAt(0);
-                SnakeBodyRects2.RemoveAt(0);
-                //TODO : Check that the heads still have the right values 
-
-                bool opposites = AreCounter();
-                bool snakesCollided = false;
                 String CollisionMessage = "";
-                //TODO : End conditions maybe changed later on
-
-                //Head Collision:
-                if (opposites && (SnakeHead1 == SnakeHead2))
-                {
-                    snakesCollided = true;
-                    int points1 = Player1.GetScore();
-                    int points2 = Player2.GetScore();
-                    CollisionMessage = "HEAD ON COLLISON";
-                    //tie
-                    if (points1 == points2)
-                    {
-                        CollisionMessage += "- TIE ";
-                    }
-                    //p1 is bigger
-                    else if (points1 >= points2)
-                    {
-                        CollisionMessage += "- Player1 Wins "; 
-                    }
-                    //p2 is bigger
-                    else
-                    {
-                        CollisionMessage += "- Player2 Wins ";
-                    }
-                }
-                //Side Collision:
-                else
-                {
-                    bool player2Crash = false;
-                    bool player1Crash = false;
-                    //check if player2 crashed into player1
-                    foreach (Rectangle rect in SnakeBodyRects1)
-                    {
-                        if (SnakeHead2 == rect)
-                        {
-                            snakesCollided = true;
-                            player2Crash = true;
-                        }
-                    }
-                    //check if player1 crashed into player2
-                    foreach (Rectangle rect in SnakeBodyRects2)
-                    {
-                        if (SnakeHead1 == rect)
-                        {
-                            snakesCollided = true;
-                            player1Crash = true;
-                        }
-                    }
-
-                    if (snakesCollided)
-                    {
-                        CollisionMessage = "Ran Into Other Player ";
-
-                        if (player1Crash && player2Crash)
-                        {
-                            CollisionMessage += "- TIE ";
-                        }
-                        //p1 is bigger
-                        else if (player2Crash)
-                        {
-                            CollisionMessage += "- Player1 Wins ";
-                        }
-                        //p2 is bigger
-                        else if(player1Crash)
-                        {
-                            CollisionMessage += "- Player2 Wins ";
-                        }
-                    }
-                }
-                //if Collision Occured:
-                if (snakesCollided)
+                CollisionMessage = SnakeWithSnakeCollision();
+                if (CollisionMessage != "")
                 {
                     //Game Over Due to Collision
                     ToggleTimer(); // No timer visible on game-over screen
@@ -238,6 +159,8 @@ namespace Snake
                 //else: proceed
                 else
                 {
+
+                    /*
                     //wall collision
                     if (Player2.IsIntersectingRect(new Rectangle(-100, 0, 100, GameCanvas.Height)))
                         Player2.OnHitWall(Direction.left);
@@ -265,11 +188,105 @@ namespace Snake
                             //Score2TxtBox.Text = (Player2.get_points()).ToString();
                         }
                     }
+                    */
+                    CheckForWallCollision(Player2);
+                    CheckForFoodCollision(Player2);
                 }
             }
+
+            CheckForWallCollision(Player1);
+            CheckForFoodCollision(Player1);
             //end
         }
         //Sam
+
+        private String SnakeWithSnakeCollision()
+        {
+            //collision between snakes
+            List<Rectangle> SnakeBodyRects1 = Player1.GetRects();
+            List<Rectangle> SnakeBodyRects2 = Player2.GetRects();
+            Rectangle SnakeHead1 = SnakeBodyRects1.ElementAt(0);
+            Rectangle SnakeHead2 = SnakeBodyRects2.ElementAt(0);
+
+            SnakeBodyRects1.RemoveAt(0);
+            SnakeBodyRects2.RemoveAt(0);
+            //TODO : Check that the heads still have the right values 
+
+            bool opposites = AreCounter();
+            bool snakesCollided = false;
+            String CollisionMessage = "";
+            //TODO : End conditions maybe changed later on
+
+            //Head Collision:
+            if (opposites && (SnakeHead1 == SnakeHead2))
+            {
+                snakesCollided = true;
+                int points1 = Player1.GetScore();
+                int points2 = Player2.GetScore();
+                CollisionMessage = "HEAD ON COLLISON";
+                //tie
+                if (points1 == points2)
+                {
+                    CollisionMessage += "- TIE ";
+                }
+                //p1 is bigger
+                else if (points1 >= points2)
+                {
+                    CollisionMessage += "- Player1 Wins ";
+                }
+                //p2 is bigger
+                else
+                {
+                    CollisionMessage += "- Player2 Wins ";
+                }
+            }
+            //Side Collision:
+            else
+            {
+                bool player2Crash = false;
+                bool player1Crash = false;
+                //check if player2 crashed into player1
+                foreach (Rectangle rect in SnakeBodyRects1)
+                {
+                    if (SnakeHead2 == rect)
+                    {
+                        snakesCollided = true;
+                        player2Crash = true;
+                    }
+                }
+                //check if player1 crashed into player2
+                foreach (Rectangle rect in SnakeBodyRects2)
+                {
+                    if (SnakeHead1 == rect)
+                    {
+                        snakesCollided = true;
+                        player1Crash = true;
+                    }
+                }
+
+                if (snakesCollided)
+                {
+                    CollisionMessage = "Ran Into Other Player ";
+
+                    if (player1Crash && player2Crash)
+                    {
+                        CollisionMessage += "- TIE ";
+                    }
+                    //p1 is bigger
+                    else if (player2Crash)
+                    {
+                        CollisionMessage += "- Player1 Wins ";
+                    }
+                    //p2 is bigger
+                    else if (player1Crash)
+                    {
+                        CollisionMessage += "- Player2 Wins ";
+                    }
+                }
+            }
+
+            return CollisionMessage;
+        }
         private bool AreCounter()
         {
             String dir1 = Player1.GetCurrentDirection();
@@ -291,7 +308,7 @@ namespace Snake
             return oppositeDirections;
         }
         //TODO : need to check if these actually pass the update through to the actual player: if so the use them to reduce redundency
-        /*
+
         private void CheckForWallCollision(SnakePlayer snakeX)
         {
             if (snakeX.IsIntersectingRect(new Rectangle(-100, 0, 100, GameCanvas.Height)))
@@ -315,38 +332,100 @@ namespace Snake
                 {
                     FoodMngr.AddRandomFood();
                     snakeX.AddBodySegments(1);
-                    snakeX.UpdatePoints(1);
+                    snakeX.UpdateScore(1);
                 }
             }
             //Score2TxtBox.Text = (Player2.get_points()).ToString();
         }
-        */
+
         //end
 
-        private void SetPlayerMovement()
+        private void SetPlayerMovement(bool controlsSwapped, bool twoPlayer)
         {
-            if (Input.IsKeyDown(Keys.Left))
+            if (!twoPlayer)
             {
-                Player1.SetDirection(Direction.left);
+                if (!controlsSwapped)
+                {
+                    if (Input.IsKeyDown(Keys.Left))
+                    {
+                        Player1.SetDirection(Direction.left);
+                    }
+                    else if (Input.IsKeyDown(Keys.Right))
+                    {
+                        Player1.SetDirection(Direction.right);
+                    }
+                    else if (Input.IsKeyDown(Keys.Up))
+                    {
+                        Player1.SetDirection(Direction.up);
+                    }
+                    else if (Input.IsKeyDown(Keys.Down))
+                    {
+                        Player1.SetDirection(Direction.down);
+                    }
+                }
+                else
+                {
+                    if (Input.IsKeyDown(Keys.A))
+                    {
+                        Player1.SetDirection(Direction.left);
+                    }
+                    else if (Input.IsKeyDown(Keys.D))
+                    {
+                        Player1.SetDirection(Direction.right);
+                    }
+                    else if (Input.IsKeyDown(Keys.W))
+                    {
+                        Player1.SetDirection(Direction.up);
+                    }
+                    else if (Input.IsKeyDown(Keys.S))
+                    {
+                        Player1.SetDirection(Direction.down);
+                    }
+                }
             }
-            else if (Input.IsKeyDown(Keys.Right))
+            else
             {
-                Player1.SetDirection(Direction.right);
-            }
-            else if (Input.IsKeyDown(Keys.Up))
-            {
-                Player1.SetDirection(Direction.up);
-            }
-            else if (Input.IsKeyDown(Keys.Down))
-            {
-                Player1.SetDirection(Direction.down);
+                if (Input.IsKeyDown(Keys.Left))
+                {
+                    Player1.SetDirection(Direction.left);
+                }
+                else if (Input.IsKeyDown(Keys.Right))
+                {
+                    Player1.SetDirection(Direction.right);
+                }
+                else if (Input.IsKeyDown(Keys.Up))
+                {
+                    Player1.SetDirection(Direction.up);
+                }
+                else if (Input.IsKeyDown(Keys.Down))
+                {
+                    Player1.SetDirection(Direction.down);
+                }
+
+                if (Input.IsKeyDown(Keys.A))
+                {
+                    Player2.SetDirection(Direction.left);
+                }
+                else if (Input.IsKeyDown(Keys.D))
+                {
+                    Player2.SetDirection(Direction.right);
+                }
+                else if (Input.IsKeyDown(Keys.W))
+                {
+                    Player2.SetDirection(Direction.up);
+                }
+                else if (Input.IsKeyDown(Keys.S))
+                {
+                    Player2.SetDirection(Direction.down);
+                }
+                Player2.MovePlayer();
             }
             Player1.MovePlayer();
         }
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            SetPlayerMovement();
+            SetPlayerMovement(false, is2Player);
             CheckForCollisions();
             GameCanvas.Invalidate();
         }
@@ -360,19 +439,19 @@ namespace Snake
         {
             //TODO : maybe remove or make invalid after a set number of press or while game is paused?
             int index = r.Next(4);
-            switch(index)
+            switch (index)
             {
-              case 0:
+                case 0:
                     MessageBox.Show("How dare you listen");
                     break;
-              case 1:
+                case 1:
                     MessageBox.Show("This is a dark path you are on");
                     //TODO : Maybe make the canvas go dark?
                     break;
-              case 2:
+                case 2:
                     MessageBox.Show("I knew you wouldn't listen");
                     break;
-              case 3:
+                case 3:
                     MessageBox.Show("Have some food :)");
                     FoodMngr.AddRandomFood(20);
                     GameCanvas.Invalidate();
