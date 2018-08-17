@@ -32,6 +32,7 @@ namespace Snake
         private SnakeForm GameForm = null; // Stores the GUI form
 
         //Sam
+        //public String SnakeName = "Player";
         private Brush SnakeColor = Brushes.Black; // Color constant for individual snake
         private int SnakeScore = 0; // Point constant for individual snake
 
@@ -152,6 +153,7 @@ namespace Snake
 
             // Need to give an initial direction
             m_MoveDirection = dir;
+            this.SetDirection(dir);//Sam: redundancy in attempt to avoid miss directed start
 
             // Currently no body parts queued to be added
             m_PendingSegments = 0;
@@ -161,7 +163,7 @@ namespace Snake
         /// Object constructor
         /// </summary>
         /// <param name="Form">GUI form for the game</param>
-        public SnakePlayer(SnakeForm Form)
+        /*public SnakePlayer(SnakeForm Form)
         {
             // Add 3 body parts to the snake because the snake begins small
             m_SnakeParts.Add(new BodyPart(100, 0, Direction.right));
@@ -174,7 +176,7 @@ namespace Snake
             // Currently no body parts queued to be added
             m_PendingSegments = 0;
             GameForm = Form;
-        }
+        }*/
 
         /// <summary>
         /// Adds snake body parts
@@ -306,9 +308,17 @@ namespace Snake
         /// <param name="WhichWall">The direction of the wall that the player hit</param>
         public void OnHitWall(Direction WhichWall)
         {
-            GameForm.ToggleTimer(); // No timer visible on game-over screen
-            MessageBox.Show("Hit Wall- GAME OVER"); // Display game-over message
-            GameForm.ResetGame();
+            //String mes = this.SnakeName + " - Hit Wall ";
+            //if (GameForm.is2Player)
+            //{
+            //    mes += " - " + + " ";
+            //}
+            
+            //GameForm.GameHasEnded(mes);
+
+            //GameForm.ToggleTimer(); // No timer visible on game-over screen
+            //MessageBox.Show("Hit Wall- GAME OVER"); // Display game-over message
+            //GameForm.ResetGame();
         }
 
         /// <summary>
@@ -330,9 +340,18 @@ namespace Snake
         /// </summary>
         public void OnHitSelf()
         {
-            GameForm.ToggleTimer(); // No timer visible on game-over screen
-            MessageBox.Show("Hit SELF- GAME OVER"); // Display game-over message
-            GameForm.ResetGame();
+            //String mes = this.SnakeName + " - Hit Self ";
+            //if (GameForm.is2Player)
+            //{
+            //    mes += " - " + + " ";
+            //}
+            //GameForm.GameHasEnded(mes);
+
+            //GameForm.ToggleTimer(); // No timer visible on game-over screen
+            //MessageBox.Show("Hit SELF- GAME OVER"); // Display game-over message
+            //GameForm.ResetGame();
+
+            GameForm.GameHasEnded("Hit SELF ");
         }
 
         /// <summary>

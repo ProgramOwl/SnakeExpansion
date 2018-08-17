@@ -32,7 +32,8 @@ namespace Snake
             ColorSets[1, 2] = Brushes.LawnGreen;
         }
         SnakePlayer Player2;
-        bool is2Player = false;
+        public bool is2Player = false;
+        Startscreen mainmenu;
         //private void ColorChange(), posible function for board update when color gets changed
         /*end*/
 
@@ -40,27 +41,40 @@ namespace Snake
         FoodManager FoodMngr;
         Random r = new Random();
 
-        //to removed Code
-        private int score = 0;
-
-        public SnakeForm(bool twoPlayer)
+        public SnakeForm(Startscreen menu, bool twoPlayer)
         {
             InitializeComponent();
             Application.AddMessageFilter(this);
             this.FormClosed += (s, e) => Application.RemoveMessageFilter(this);
             //Sam
+            mainmenu = menu;
             is2Player = twoPlayer;
             BuildBrush();
-            Player1 = new SnakePlayer(this, 80, 0, Direction.right);
+            Player1 = new SnakePlayer(this, 80, 20, Direction.right);
+            ScoreTxtBox.Text = Player1.GetScore().ToString();
             if (is2Player)
             {
-                Player2 = new SnakePlayer(this, 0, 80, Direction.down);
+                Player2 = new SnakePlayer(this, 120, 80, Direction.down);
                 Player2.SetColor(ColorSets[1, 0]);
+                //Score2TxtBox.Text = Player2.GetScore().ToString();
             }
             //end
             FoodMngr = new FoodManager(GameCanvas.Width, GameCanvas.Height);
             FoodMngr.AddRandomFood(10);
-            ScoreTxtBox.Text = score.ToString();
+
+            this.FormClosing += SnakeForm1_FormClosing;
+        }
+
+        private void SnakeForm1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MessageBox.Show("Do you want to return to the main menu?", "Snake Game", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                mainmenu.Show();
+            }
+            else
+            {
+                mainmenu.subExit();
+            }
         }
 
         public void ToggleTimer()
@@ -68,24 +82,41 @@ namespace Snake
             GameTimer.Enabled = !GameTimer.Enabled;
         }
 
+        public void GameHasEnded(String CollisionMessage)
+        {
+            //Game Over Due to Collision
+            ToggleTimer(); // No timer visible on game-over screen
+            if(MessageBox.Show(CollisionMessage + " - GAME OVER \nDo you want to play again?", "Snake Game", 
+                MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                ResetGame();
+            }
+            else
+            {
+                this.Close();
+            }
+            //MessageBox.Show(CollisionMessage + "- GAME OVER"); // Display game-over message
+            //ResetGame();
+        }
+
         public void ResetGame()
         {
-            //Player1 = new SnakePlayer(this);
             //Sam
             Brush x = Player1.GetColor();
-            Player1 = new SnakePlayer(this, 80, 0, Direction.right);
+            Player1 = new SnakePlayer(this, 80, 20, Direction.right);
             Player1.SetColor(x);
+            ScoreTxtBox.Text = Player1.GetScore().ToString();
 
             if (is2Player)
             {
                 x = Player2.GetColor();
-                Player2 = new SnakePlayer(this, 0, 80, Direction.down);
+                Player2 = new SnakePlayer(this, 120, 80, Direction.down);
                 Player2.SetColor(x);
+                //Score2TxtBox.Text = (Player2.get_points()).ToString();
             }
             //end
             FoodMngr = new FoodManager(GameCanvas.Width, GameCanvas.Height);
             FoodMngr.AddRandomFood(10);
-            score = 0;
         }
 
         public bool PreFilterMessage(ref Message msg)
@@ -117,7 +148,42 @@ namespace Snake
 
         private void CheckForCollisions()
         {
-            /*
+            //Sam
+            if (is2Player)
+            {
+                if(SnakeWithSnakeCollision())
+                {
+                    //GameHasEnded(CollisionMessage);
+                }
+                else
+                {                    
+                    bool col1 = CheckForWallCollision(Player1);
+                    bool col2 = CheckForWallCollision(Player2);
+                    if (col1 || col2)
+                    {
+                        String mes = (col1 == col2 ? "- Tie" : (col1 ? "- Player2 Wins " : "- Player1 Wins"));
+                        GameHasEnded("Hit wall " + mes);
+                    }
+
+                    if (CheckForFoodCollision(Player1))
+                        ScoreTxtBox.Text = Player1.GetScore().ToString();
+                    //if (CheckForFoodCollision(Player2))
+                        //MessageBox.Show("Player2 got food");
+                        //Score2TxtBox.Text = (Player2.get_points()).ToString();
+                }
+            }
+            else
+            {
+                if (CheckForWallCollision(Player1))
+                    GameHasEnded("Hit wall ");
+                else if (CheckForFoodCollision(Player1))
+                    ScoreTxtBox.Text = Player1.GetScore().ToString();
+            }
+            //end
+        }
+
+        //Sam: Collision Checking Methods
+        /*
             if (Player1.IsIntersectingRect(new Rectangle(-100, 0, 100, GameCanvas.Height)))
                 Player1.OnHitWall(Direction.left);
 
@@ -142,65 +208,8 @@ namespace Snake
                     ScoreTxtBox.Text = score.ToString();
                 }
             }*/
-            //Sam
-            if (is2Player)
-            {
 
-                String CollisionMessage = "";
-                CollisionMessage = SnakeWithSnakeCollision();
-                if (CollisionMessage != "")
-                {
-                    //Game Over Due to Collision
-                    ToggleTimer(); // No timer visible on game-over screen
-                    MessageBox.Show(CollisionMessage + "- GAME OVER"); // Display game-over message
-                    ResetGame();
-                }
-
-                //else: proceed
-                else
-                {
-
-                    /*
-                    //wall collision
-                    if (Player2.IsIntersectingRect(new Rectangle(-100, 0, 100, GameCanvas.Height)))
-                        Player2.OnHitWall(Direction.left);
-
-                    if (Player2.IsIntersectingRect(new Rectangle(0, -100, GameCanvas.Width, 100)))
-                        Player2.OnHitWall(Direction.up);
-
-                    if (Player2.IsIntersectingRect(new Rectangle(GameCanvas.Width, 0, 100, GameCanvas.Height)))
-                        Player2.OnHitWall(Direction.right);
-
-                    if (Player2.IsIntersectingRect(new Rectangle(0, GameCanvas.Height, GameCanvas.Width, 100)))
-                        Player2.OnHitWall(Direction.down);
-
-                    //TODO : Check the run of the food collision in case of miss earned points, though if killed from collision point get reset so should be fine
-
-                    //food collision
-                    List<Rectangle> SnakeRects2 = Player2.GetRects();
-                    foreach (Rectangle rect in SnakeRects2)
-                    {
-                        if (FoodMngr.IsIntersectingRect(rect, true))
-                        {
-                            FoodMngr.AddRandomFood();
-                            Player2.AddBodySegments(1);
-                            Player2.UpdateScore(1);
-                            //Score2TxtBox.Text = (Player2.get_points()).ToString();
-                        }
-                    }
-                    */
-                    CheckForWallCollision(Player2);
-                    CheckForFoodCollision(Player2);
-                }
-            }
-
-            CheckForWallCollision(Player1);
-            CheckForFoodCollision(Player1);
-            //end
-        }
-        //Sam
-
-        private String SnakeWithSnakeCollision()
+        private bool SnakeWithSnakeCollision()
         {
             //collision between snakes
             List<Rectangle> SnakeBodyRects1 = Player1.GetRects();
@@ -208,11 +217,11 @@ namespace Snake
             Rectangle SnakeHead1 = SnakeBodyRects1.ElementAt(0);
             Rectangle SnakeHead2 = SnakeBodyRects2.ElementAt(0);
 
-            SnakeBodyRects1.RemoveAt(0);
-            SnakeBodyRects2.RemoveAt(0);
+            //SnakeBodyRects1.RemoveAt(0);
+            //SnakeBodyRects2.RemoveAt(0);
             //TODO : Check that the heads still have the right values 
 
-            bool opposites = AreCounter();
+            bool opposites = AreHeadbutting();
             bool snakesCollided = false;
             String CollisionMessage = "";
             //TODO : End conditions maybe changed later on
@@ -223,11 +232,11 @@ namespace Snake
                 snakesCollided = true;
                 int points1 = Player1.GetScore();
                 int points2 = Player2.GetScore();
-                CollisionMessage = "HEAD ON COLLISON";
+                CollisionMessage = "Head On Collision ";
                 //tie
                 if (points1 == points2)
                 {
-                    CollisionMessage += "- TIE ";
+                    CollisionMessage += "- Tie ";
                 }
                 //p1 is bigger
                 else if (points1 >= points2)
@@ -270,7 +279,7 @@ namespace Snake
 
                     if (player1Crash && player2Crash)
                     {
-                        CollisionMessage += "- TIE ";
+                        CollisionMessage += "- Tie ";
                     }
                     //p1 is bigger
                     else if (player2Crash)
@@ -285,9 +294,16 @@ namespace Snake
                 }
             }
 
-            return CollisionMessage;
+            //send message of game end
+            if (snakesCollided)
+            {
+                GameHasEnded(CollisionMessage);
+            }
+
+            //return CollisionMessage;
+            return snakesCollided;
         }
-        private bool AreCounter()
+        private bool AreHeadbutting()
         {
             String dir1 = Player1.GetCurrentDirection();
             String dir2 = Player2.GetCurrentDirection();
@@ -307,24 +323,28 @@ namespace Snake
 
             return oppositeDirections;
         }
-        //TODO : need to check if these actually pass the update through to the actual player: if so the use them to reduce redundency
-
-        private void CheckForWallCollision(SnakePlayer snakeX)
+        private bool CheckForWallCollision(SnakePlayer snakeX)
         {
             if (snakeX.IsIntersectingRect(new Rectangle(-100, 0, 100, GameCanvas.Height)))
-                snakeX.OnHitWall(Direction.left);
+                return true;
+                //snakeX.OnHitWall(Direction.left);
 
             if (snakeX.IsIntersectingRect(new Rectangle(0, -100, GameCanvas.Width, 100)))
-                snakeX.OnHitWall(Direction.up);
+                return true;
+                //snakeX.OnHitWall(Direction.up);
 
             if (snakeX.IsIntersectingRect(new Rectangle(GameCanvas.Width, 0, 100, GameCanvas.Height)))
-                snakeX.OnHitWall(Direction.right);
+                return true;
+                //snakeX.OnHitWall(Direction.right);
 
             if (snakeX.IsIntersectingRect(new Rectangle(0, GameCanvas.Height, GameCanvas.Width, 100)))
-                snakeX.OnHitWall(Direction.down);
+                return true;
+                //snakeX.OnHitWall(Direction.down);
+            return false;
         }
-        private void CheckForFoodCollision(SnakePlayer snakeX)
+        private bool CheckForFoodCollision(SnakePlayer snakeX)
         {
+            bool hitFood = false;
             List<Rectangle> SnakeRects = snakeX.GetRects();
             foreach (Rectangle rect in SnakeRects)
             {
@@ -333,9 +353,10 @@ namespace Snake
                     FoodMngr.AddRandomFood();
                     snakeX.AddBodySegments(1);
                     snakeX.UpdateScore(1);
+                    hitFood = true;
                 }
             }
-            //Score2TxtBox.Text = (Player2.get_points()).ToString();
+            return hitFood;
         }
 
         //end
