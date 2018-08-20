@@ -89,7 +89,7 @@
             // ScoreLbl
             // 
             this.ScoreLbl.AutoSize = true;
-            this.ScoreLbl.Location = new System.Drawing.Point(1016, 89);
+            this.ScoreLbl.Location = new System.Drawing.Point(1014, 81);
             this.ScoreLbl.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.ScoreLbl.Name = "ScoreLbl";
             this.ScoreLbl.Size = new System.Drawing.Size(70, 25);

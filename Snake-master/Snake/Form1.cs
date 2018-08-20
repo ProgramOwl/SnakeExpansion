@@ -60,6 +60,19 @@ namespace Snake
             Graphics canvas = e.Graphics;
             Player1.Draw(canvas);
             FoodMngr.Draw(canvas);
+            int numOfCells = 100;
+            int cellSize = 20;
+            Pen p = new Pen(Color.Black);
+
+            for (int y = 0; y < numOfCells; ++y)
+            {
+                canvas.DrawLine(p, 0, y * cellSize, numOfCells * cellSize, y * cellSize);
+            }
+
+            for (int x = 0; x < numOfCells; ++x)
+            {
+                canvas.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);
+            }
         }
 
         private void CheckForCollisions()
