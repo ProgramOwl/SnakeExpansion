@@ -40,6 +40,11 @@
             this.Player2Label = new System.Windows.Forms.Label();
             this.ToggleGrid = new System.Windows.Forms.CheckBox();
             this.Ctrl_Toggle = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.skin2label = new System.Windows.Forms.Label();
+            this.skin2comboBox = new System.Windows.Forms.ComboBox();
+            this.skin1comboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.GameCanvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,7 +89,7 @@
             // ScoreTxtBox
             // 
             this.ScoreTxtBox.Enabled = false;
-            this.ScoreTxtBox.Location = new System.Drawing.Point(1100, 78);
+            this.ScoreTxtBox.Location = new System.Drawing.Point(1096, 292);
             this.ScoreTxtBox.Margin = new System.Windows.Forms.Padding(6);
             this.ScoreTxtBox.Name = "ScoreTxtBox";
             this.ScoreTxtBox.ReadOnly = true;
@@ -94,7 +99,7 @@
             // ScoreLbl
             // 
             this.ScoreLbl.AutoSize = true;
-            this.ScoreLbl.Location = new System.Drawing.Point(1020, 89);
+            this.ScoreLbl.Location = new System.Drawing.Point(1016, 303);
             this.ScoreLbl.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.ScoreLbl.Name = "ScoreLbl";
             this.ScoreLbl.Size = new System.Drawing.Size(70, 25);
@@ -104,7 +109,7 @@
             // Score2Label
             // 
             this.Score2Label.AutoSize = true;
-            this.Score2Label.Location = new System.Drawing.Point(1016, 458);
+            this.Score2Label.Location = new System.Drawing.Point(1016, 496);
             this.Score2Label.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.Score2Label.Name = "Score2Label";
             this.Score2Label.Size = new System.Drawing.Size(70, 25);
@@ -114,7 +119,7 @@
             // Score2TxtBox
             // 
             this.Score2TxtBox.Enabled = false;
-            this.Score2TxtBox.Location = new System.Drawing.Point(1096, 447);
+            this.Score2TxtBox.Location = new System.Drawing.Point(1096, 485);
             this.Score2TxtBox.Margin = new System.Windows.Forms.Padding(6);
             this.Score2TxtBox.Name = "Score2TxtBox";
             this.Score2TxtBox.ReadOnly = true;
@@ -124,7 +129,7 @@
             // Player2Label
             // 
             this.Player2Label.AutoSize = true;
-            this.Player2Label.Location = new System.Drawing.Point(1163, 387);
+            this.Player2Label.Location = new System.Drawing.Point(1163, 439);
             this.Player2Label.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.Player2Label.Name = "Player2Label";
             this.Player2Label.Size = new System.Drawing.Size(83, 25);
@@ -134,27 +139,80 @@
             // ToggleGrid
             // 
             this.ToggleGrid.AutoSize = true;
-            this.ToggleGrid.Location = new System.Drawing.Point(1025, 150);
+            this.ToggleGrid.Location = new System.Drawing.Point(1016, 150);
             this.ToggleGrid.Name = "ToggleGrid";
             this.ToggleGrid.Size = new System.Drawing.Size(140, 29);
             this.ToggleGrid.TabIndex = 8;
             this.ToggleGrid.Text = "Toggle Grid";
             this.ToggleGrid.UseVisualStyleBackColor = true;
+            this.ToggleGrid.CheckedChanged += new System.EventHandler(this.ToggleGrid_CheckedChanged);
             // 
             // Ctrl_Toggle
             // 
-            this.Ctrl_Toggle.Location = new System.Drawing.Point(1016, 204);
+            this.Ctrl_Toggle.Location = new System.Drawing.Point(1016, 86);
             this.Ctrl_Toggle.Name = "Ctrl_Toggle";
             this.Ctrl_Toggle.Size = new System.Drawing.Size(376, 42);
             this.Ctrl_Toggle.TabIndex = 9;
-            this.Ctrl_Toggle.Text = "Control Toggle";
+            this.Ctrl_Toggle.Text = "Controls: Arrows";
             this.Ctrl_Toggle.UseVisualStyleBackColor = true;
+            this.Ctrl_Toggle.Click += new System.EventHandler(this.Ctrl_Toggle_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(1163, 244);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(83, 25);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Player 1";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(1029, 353);
+            this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(57, 25);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Skin:";
+            // 
+            // skin2label
+            // 
+            this.skin2label.AutoSize = true;
+            this.skin2label.Location = new System.Drawing.Point(1029, 546);
+            this.skin2label.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.skin2label.Name = "skin2label";
+            this.skin2label.Size = new System.Drawing.Size(57, 25);
+            this.skin2label.TabIndex = 12;
+            this.skin2label.Text = "Skin:";
+            // 
+            // skin2comboBox
+            // 
+            this.skin2comboBox.FormattingEnabled = true;
+            this.skin2comboBox.Location = new System.Drawing.Point(1096, 539);
+            this.skin2comboBox.Name = "skin2comboBox";
+            this.skin2comboBox.Size = new System.Drawing.Size(292, 32);
+            this.skin2comboBox.TabIndex = 13;
+            // 
+            // skin1comboBox
+            // 
+            this.skin1comboBox.FormattingEnabled = true;
+            this.skin1comboBox.Location = new System.Drawing.Point(1096, 346);
+            this.skin1comboBox.Name = "skin1comboBox";
+            this.skin1comboBox.Size = new System.Drawing.Size(292, 32);
+            this.skin1comboBox.TabIndex = 14;
             // 
             // SnakeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1414, 764);
+            this.Controls.Add(this.skin1comboBox);
+            this.Controls.Add(this.skin2comboBox);
+            this.Controls.Add(this.skin2label);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.Ctrl_Toggle);
             this.Controls.Add(this.ToggleGrid);
             this.Controls.Add(this.Player2Label);
@@ -188,6 +246,11 @@
         private System.Windows.Forms.Label Player2Label;
         private System.Windows.Forms.CheckBox ToggleGrid;
         private System.Windows.Forms.Button Ctrl_Toggle;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label skin2label;
+        private System.Windows.Forms.ComboBox skin2comboBox;
+        private System.Windows.Forms.ComboBox skin1comboBox;
 
         //end
     }

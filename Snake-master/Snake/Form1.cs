@@ -77,6 +77,8 @@ namespace Snake
                 Player2Label.Visible = false;
                 Score2Label.Visible = false;
                 Score2TxtBox.Visible = false;
+                skin2label.Visible = false;
+                skin2comboBox.Visible = false;
             }
 
         }
@@ -386,6 +388,10 @@ namespace Snake
         private void Ctrl_Toggle_Click(object sender, EventArgs e)
         {
             controlsSwapped = !controlsSwapped;
+            if (controlsSwapped)
+                this.Text = "Controls: WASD";
+            else
+                this.Text = "Controls: Arrows";
         }
         private void SetPlayerMovement(bool controlsSwapped, bool twoPlayer)
         {
@@ -493,7 +499,11 @@ namespace Snake
                     break;
                 case 1:
                     MessageBox.Show("This is a dark path you are on");
-                    //TODO : Maybe make the canvas go dark?
+                    //TODO Bob : Maybe make the canvas go dark?
+                    //apply a background to the grid (I suggest a bool for state( if bright or dark)
+                    //when they hit this make the background black, the grid lines white, 
+                    //and set the skin of snake one to white if black, and update ColorSets[0,0] to white
+                    //if the hit this again then make it back to light (change the message in the message box accordingly
                     break;
                 case 2:
                     MessageBox.Show("I knew you wouldn't listen");
@@ -512,6 +522,7 @@ namespace Snake
         private void ToggleGrid_CheckedChanged(object sender, EventArgs e)
         {
             gridVisible = !gridVisible;
+            GameCanvas.Invalidate();
         }
         private void Grid_Paint(Graphics canv, int cells)
         {
@@ -528,6 +539,5 @@ namespace Snake
                 canv.DrawLine(p, x * cellSize, 0, x * cellSize, cells * cellSize);
             }
         }
-        
     }
 }

@@ -30,3 +30,14 @@ C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\SnakeExpansion\Snake-master\Snake\o
 C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.csproj.CoreCompileInputs.cache
 C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.exe
 C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.pdb
+C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\Master\SnakeExpansion\Snake-master\Snake\bin\Debug\Snake.exe.config
+C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\Master\SnakeExpansion\Snake-master\Snake\bin\Debug\Snake.exe
+C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\Master\SnakeExpansion\Snake-master\Snake\bin\Debug\Snake.pdb
+C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\Master\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.csprojAssemblyReference.cache
+C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\Master\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.SnakeForm.resources
+C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\Master\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.Properties.Resources.resources
+C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\Master\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.Startscreen.resources
+C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\Master\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.csproj.GenerateResource.cache
+C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\Master\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.csproj.CoreCompileInputs.cache
+C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\Master\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.exe
+C:\Users\SWaugh\Desktop\230_SoftProj\GitProj\Master\SnakeExpansion\Snake-master\Snake\obj\Debug\Snake.pdb
