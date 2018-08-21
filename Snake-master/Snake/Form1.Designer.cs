@@ -35,6 +35,9 @@
             this.DareBtn = new System.Windows.Forms.Button();
             this.ScoreTxtBox = new System.Windows.Forms.TextBox();
             this.ScoreLbl = new System.Windows.Forms.Label();
+            this.Score2Label = new System.Windows.Forms.Label();
+            this.Score2TxtBox = new System.Windows.Forms.TextBox();
+            this.Player2Label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.GameCanvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,7 +82,7 @@
             // ScoreTxtBox
             // 
             this.ScoreTxtBox.Enabled = false;
-            this.ScoreTxtBox.Location = new System.Drawing.Point(1096, 78);
+            this.ScoreTxtBox.Location = new System.Drawing.Point(1100, 78);
             this.ScoreTxtBox.Margin = new System.Windows.Forms.Padding(6);
             this.ScoreTxtBox.Name = "ScoreTxtBox";
             this.ScoreTxtBox.ReadOnly = true;
@@ -89,18 +92,51 @@
             // ScoreLbl
             // 
             this.ScoreLbl.AutoSize = true;
-            this.ScoreLbl.Location = new System.Drawing.Point(1016, 89);
+            this.ScoreLbl.Location = new System.Drawing.Point(1020, 89);
             this.ScoreLbl.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.ScoreLbl.Name = "ScoreLbl";
             this.ScoreLbl.Size = new System.Drawing.Size(70, 25);
             this.ScoreLbl.TabIndex = 4;
             this.ScoreLbl.Text = "Score:";
             // 
+            // Score2Label
+            // 
+            this.Score2Label.AutoSize = true;
+            this.Score2Label.Location = new System.Drawing.Point(1016, 458);
+            this.Score2Label.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.Score2Label.Name = "Score2Label";
+            this.Score2Label.Size = new System.Drawing.Size(70, 25);
+            this.Score2Label.TabIndex = 6;
+            this.Score2Label.Text = "Score:";
+            // 
+            // Score2TxtBox
+            // 
+            this.Score2TxtBox.Enabled = false;
+            this.Score2TxtBox.Location = new System.Drawing.Point(1096, 447);
+            this.Score2TxtBox.Margin = new System.Windows.Forms.Padding(6);
+            this.Score2TxtBox.Name = "Score2TxtBox";
+            this.Score2TxtBox.ReadOnly = true;
+            this.Score2TxtBox.Size = new System.Drawing.Size(292, 29);
+            this.Score2TxtBox.TabIndex = 5;
+            // 
+            // Player2Label
+            // 
+            this.Player2Label.AutoSize = true;
+            this.Player2Label.Location = new System.Drawing.Point(1163, 387);
+            this.Player2Label.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.Player2Label.Name = "Player2Label";
+            this.Player2Label.Size = new System.Drawing.Size(83, 25);
+            this.Player2Label.TabIndex = 7;
+            this.Player2Label.Text = "Player 2";
+            // 
             // SnakeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1414, 764);
+            this.Controls.Add(this.Player2Label);
+            this.Controls.Add(this.Score2Label);
+            this.Controls.Add(this.Score2TxtBox);
             this.Controls.Add(this.ScoreLbl);
             this.Controls.Add(this.ScoreTxtBox);
             this.Controls.Add(this.DareBtn);
@@ -123,6 +159,11 @@
         private System.Windows.Forms.Button DareBtn;
         private System.Windows.Forms.TextBox ScoreTxtBox;
         private System.Windows.Forms.Label ScoreLbl;
+        //sam
+        private System.Windows.Forms.Label Score2Label;
+        private System.Windows.Forms.TextBox Score2TxtBox;
+        private System.Windows.Forms.Label Player2Label;
+        //end
     }
 }
 
