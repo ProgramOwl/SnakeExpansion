@@ -35,6 +35,8 @@
             this.DareBtn = new System.Windows.Forms.Button();
             this.ScoreTxtBox = new System.Windows.Forms.TextBox();
             this.ScoreLbl = new System.Windows.Forms.Label();
+            this.ToggleGrid = new System.Windows.Forms.CheckBox();
+            this.Ctrl_Toggle = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.GameCanvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -96,11 +98,34 @@
             this.ScoreLbl.TabIndex = 4;
             this.ScoreLbl.Text = "Score:";
             // 
+            // ToggleGrid
+            // 
+            this.ToggleGrid.AutoSize = true;
+            this.ToggleGrid.Location = new System.Drawing.Point(1016, 147);
+            this.ToggleGrid.Name = "ToggleGrid";
+            this.ToggleGrid.Size = new System.Drawing.Size(140, 29);
+            this.ToggleGrid.TabIndex = 5;
+            this.ToggleGrid.Text = "Toggle Grid";
+            this.ToggleGrid.UseVisualStyleBackColor = true;
+            this.ToggleGrid.CheckedChanged += new System.EventHandler(this.ToggleGrid_CheckedChanged);
+            // 
+            // Ctrl_Toggle
+            // 
+            this.Ctrl_Toggle.Location = new System.Drawing.Point(1016, 204);
+            this.Ctrl_Toggle.Name = "Ctrl_Toggle";
+            this.Ctrl_Toggle.Size = new System.Drawing.Size(376, 42);
+            this.Ctrl_Toggle.TabIndex = 6;
+            this.Ctrl_Toggle.Text = "Control Toggle";
+            this.Ctrl_Toggle.UseVisualStyleBackColor = true;
+            this.Ctrl_Toggle.Click += new System.EventHandler(this.Ctrl_Toggle_Click);
+            // 
             // SnakeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1414, 764);
+            this.Controls.Add(this.Ctrl_Toggle);
+            this.Controls.Add(this.ToggleGrid);
             this.Controls.Add(this.ScoreLbl);
             this.Controls.Add(this.ScoreTxtBox);
             this.Controls.Add(this.DareBtn);
@@ -123,6 +148,8 @@
         private System.Windows.Forms.Button DareBtn;
         private System.Windows.Forms.TextBox ScoreTxtBox;
         private System.Windows.Forms.Label ScoreLbl;
+        private System.Windows.Forms.CheckBox ToggleGrid;
+        private System.Windows.Forms.Button Ctrl_Toggle;
     }
 }
 

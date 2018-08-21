@@ -11,12 +11,17 @@ using System.Diagnostics;
 
 namespace Snake
 {
-    public partial class SnakeForm : Form,IMessageFilter
+    public partial class SnakeForm : Form, IMessageFilter
     {
         SnakePlayer Player1;
         FoodManager FoodMngr;
         Random r = new Random();
         private int score = 0;
+        Graphics canvas;
+
+        //Feel free to delete this boolean and replace it with controlsSwapped. Just used to test out the btn click method.
+        bool test = false;
+
         public SnakeForm(bool twoPlayer)
         {
             InitializeComponent();
@@ -57,21 +62,24 @@ namespace Snake
 
         private void GameCanvas_Paint(object sender, PaintEventArgs e)
         {
-            Graphics canvas = e.Graphics;
+            canvas = e.Graphics;
             Player1.Draw(canvas);
             FoodMngr.Draw(canvas);
-            int numOfCells = 100;
+        }
+
+        private void Grid_Paint(Graphics canv, int cells)
+        {
             int cellSize = 20;
             Pen p = new Pen(Color.Black);
 
-            for (int y = 0; y < numOfCells; ++y)
+            for (int y = 0; y < cells; ++y)
             {
-                canvas.DrawLine(p, 0, y * cellSize, numOfCells * cellSize, y * cellSize);
+                canv.DrawLine(p, 0, y * cellSize, cells * cellSize, y * cellSize);
             }
 
-            for (int x = 0; x < numOfCells; ++x)
+            for (int x = 0; x < cells; ++x)
             {
-                canvas.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);
+                canv.DrawLine(p, x * cellSize, 0, x * cellSize, cells * cellSize);
             }
         }
 
@@ -158,6 +166,17 @@ namespace Snake
                 default:
                     break;
             }
+        }
+
+        private void ToggleGrid_CheckedChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void Ctrl_Toggle_Click(object sender, EventArgs e)
+        {
+            test = !test;
+            //controlsSwapped = !controlsSwapped;
         }
     }
 }
