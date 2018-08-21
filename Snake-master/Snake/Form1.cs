@@ -50,17 +50,14 @@ namespace Snake
             Application.AddMessageFilter(this);
             this.FormClosed += (s, e) => Application.RemoveMessageFilter(this);
             //Sam
+            BuildBrush();
             mainmenu = menu;
             is2Player = twoPlayer;
-            BuildBrush();
-            Player1 = new SnakePlayer(this, 80, 20, Direction.right);
-            ScoreTxtBox.Text = Player1.GetScore().ToString();
-            if (is2Player)
-            {
-                Player2 = new SnakePlayer(this, 120, 80, Direction.down);
-                Player2.SetColor(ColorSets[1, 0]);
-                //Score2TxtBox.Text = Player2.GetScore().ToString();
-            }
+            skin1comboBox.SelectedIndex = 0;
+            skin2comboBox.SelectedIndex = 0;
+
+            SnakeSetup();
+            DisplaySetup();
             //end
             FoodMngr = new FoodManager(GameCanvas.Width, GameCanvas.Height);
             FoodMngr.AddRandomFood(10);
@@ -68,11 +65,39 @@ namespace Snake
             this.FormClosing += SnakeForm1_FormClosing;
         }
 
-        //Sam
-        //create a visual set up based on number of players
-        private void DisplaySetup(int players)
+        private void SnakeSetup()
         {
-            if (players == 1)
+            //Brush x = Player1.GetColor();
+            //Player1 = new SnakePlayer(this, 80, 20, Direction.right);
+            //Player1.SetColor(x);
+            //ScoreTxtBox.Text = Player1.GetScore().ToString();
+
+            //if (is2Player)
+            //{
+            //    x = Player2.GetColor();
+            //    Player2 = new SnakePlayer(this, 20, 80, Direction.down);
+            //    Player2.SetColor(x);
+            //    //Score2TxtBox.Text = (Player2.get_points()).ToString();
+            //}
+
+            Player1 = new SnakePlayer(this, 80, 20, Direction.right);
+            ScoreTxtBox.Text = Player1.GetScore().ToString();
+            int col = skin1comboBox.SelectedIndex;
+            Player1.SetColor(ColorSets[0, col]);
+
+            if (is2Player)
+            {
+                Player2 = new SnakePlayer(this, 20, 80, Direction.down);
+                Score2TxtBox.Text = Player2.GetScore().ToString();
+                int col2 = skin2comboBox.SelectedIndex;
+                Player2.SetColor(ColorSets[1, col2]);
+            }
+        }
+       
+        //create a visual set up based on number of players
+        private void DisplaySetup()
+        {
+            if (!is2Player)
             {
                 Player2Label.Visible = false;
                 Score2Label.Visible = false;
@@ -121,22 +146,12 @@ namespace Snake
 
         public void ResetGame()
         {
-            //Sam
-            Brush x = Player1.GetColor();
-            Player1 = new SnakePlayer(this, 80, 20, Direction.right);
-            Player1.SetColor(x);
-            ScoreTxtBox.Text = Player1.GetScore().ToString();
-
-            if (is2Player)
-            {
-                x = Player2.GetColor();
-                Player2 = new SnakePlayer(this, 120, 80, Direction.down);
-                Player2.SetColor(x);
-                //Score2TxtBox.Text = (Player2.get_points()).ToString();
-            }
+            //Sam           
+            SnakeSetup();
             //end
             FoodMngr = new FoodManager(GameCanvas.Width, GameCanvas.Height);
             FoodMngr.AddRandomFood(10);
+            DisplaySetup();
         }
 
         public bool PreFilterMessage(ref Message msg)
@@ -389,11 +404,14 @@ namespace Snake
         {
             controlsSwapped = !controlsSwapped;
             if (controlsSwapped)
-                this.Text = "Controls: WASD";
+                Ctrl_Toggle.Text = "Controls: WASD";
+            else if(!controlsSwapped)
+                Ctrl_Toggle.Text = "Controls: Arrows";
             else
-                this.Text = "Controls: Arrows";
+                Ctrl_Toggle.Text = "Controls: null";
         }
-        private void SetPlayerMovement(bool controlsSwapped, bool twoPlayer)
+
+        private void SetPlayerMovement()
         {
             if (!controlsSwapped)
             {
@@ -433,7 +451,8 @@ namespace Snake
                     Player1.SetDirection(Direction.down);
                 }
             }
-            if (twoPlayer)
+
+            if (is2Player)
             {
                 if (!controlsSwapped)
                 {
@@ -480,7 +499,7 @@ namespace Snake
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            SetPlayerMovement(false, is2Player);
+            SetPlayerMovement();
             CheckForCollisions();
             GameCanvas.Invalidate();
         }
@@ -540,6 +559,22 @@ namespace Snake
             {
                 canv.DrawLine(p, x * cellSize, 0, x * cellSize, cells * cellSize);
             }
+        }
+
+        private void skin1comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int col = skin1comboBox.SelectedIndex;
+            if(Player1 != null)
+                Player1.SetColor(ColorSets[0, col]);
+            GameCanvas.Invalidate();
+        }
+
+        private void skin2comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int col = skin2comboBox.SelectedIndex;
+            if (Player2 != null)
+                Player2.SetColor(ColorSets[1, col]);
+            GameCanvas.Invalidate();
         }
     }
 }
