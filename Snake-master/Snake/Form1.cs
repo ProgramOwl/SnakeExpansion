@@ -67,7 +67,7 @@ namespace Snake
 
             this.FormClosing += SnakeForm1_FormClosing;
         }
-        
+
         //Sam
         //create a visual set up based on number of players
         private void DisplaySetup(int players)
@@ -106,7 +106,7 @@ namespace Snake
         {
             //Game Over Due to Collision
             ToggleTimer(); // No timer visible on game-over screen
-            if(MessageBox.Show(CollisionMessage + " - GAME OVER \nDo you want to play again?", "Snake Game", 
+            if (MessageBox.Show(CollisionMessage + " - GAME OVER \nDo you want to play again?", "Snake Game",
                 MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 ResetGame();
@@ -175,12 +175,12 @@ namespace Snake
             //Sam
             if (is2Player)
             {
-                if(SnakeWithSnakeCollision())
+                if (SnakeWithSnakeCollision())
                 {
                     //GameHasEnded(CollisionMessage);
                 }
                 else
-                {                    
+                {
                     bool col1 = CheckForWallCollision(Player1);
                     bool col2 = CheckForWallCollision(Player2);
                     if (col1 || col2)
@@ -350,19 +350,19 @@ namespace Snake
         {
             if (snakeX.IsIntersectingRect(new Rectangle(-100, 0, 100, GameCanvas.Height)))
                 return true;
-                //snakeX.OnHitWall(Direction.left);
+            //snakeX.OnHitWall(Direction.left);
 
             if (snakeX.IsIntersectingRect(new Rectangle(0, -100, GameCanvas.Width, 100)))
                 return true;
-                //snakeX.OnHitWall(Direction.up);
+            //snakeX.OnHitWall(Direction.up);
 
             if (snakeX.IsIntersectingRect(new Rectangle(GameCanvas.Width, 0, 100, GameCanvas.Height)))
                 return true;
-                //snakeX.OnHitWall(Direction.right);
+            //snakeX.OnHitWall(Direction.right);
 
             if (snakeX.IsIntersectingRect(new Rectangle(0, GameCanvas.Height, GameCanvas.Width, 100)))
                 return true;
-                //snakeX.OnHitWall(Direction.down);
+            //snakeX.OnHitWall(Direction.down);
             return false;
         }
         private bool CheckForFoodCollision(SnakePlayer snakeX)
@@ -395,48 +395,7 @@ namespace Snake
         }
         private void SetPlayerMovement(bool controlsSwapped, bool twoPlayer)
         {
-            if (!twoPlayer)
-            {
-                if (!controlsSwapped)
-                {
-                    if (Input.IsKeyDown(Keys.Left))
-                    {
-                        Player1.SetDirection(Direction.left);
-                    }
-                    else if (Input.IsKeyDown(Keys.Right))
-                    {
-                        Player1.SetDirection(Direction.right);
-                    }
-                    else if (Input.IsKeyDown(Keys.Up))
-                    {
-                        Player1.SetDirection(Direction.up);
-                    }
-                    else if (Input.IsKeyDown(Keys.Down))
-                    {
-                        Player1.SetDirection(Direction.down);
-                    }
-                }
-                else
-                {
-                    if (Input.IsKeyDown(Keys.A))
-                    {
-                        Player1.SetDirection(Direction.left);
-                    }
-                    else if (Input.IsKeyDown(Keys.D))
-                    {
-                        Player1.SetDirection(Direction.right);
-                    }
-                    else if (Input.IsKeyDown(Keys.W))
-                    {
-                        Player1.SetDirection(Direction.up);
-                    }
-                    else if (Input.IsKeyDown(Keys.S))
-                    {
-                        Player1.SetDirection(Direction.down);
-                    }
-                }
-            }
-            else
+            if (!controlsSwapped)
             {
                 if (Input.IsKeyDown(Keys.Left))
                 {
@@ -454,22 +413,65 @@ namespace Snake
                 {
                     Player1.SetDirection(Direction.down);
                 }
-
+            }
+            else
+            {
                 if (Input.IsKeyDown(Keys.A))
                 {
-                    Player2.SetDirection(Direction.left);
+                    Player1.SetDirection(Direction.left);
                 }
                 else if (Input.IsKeyDown(Keys.D))
                 {
-                    Player2.SetDirection(Direction.right);
+                    Player1.SetDirection(Direction.right);
                 }
                 else if (Input.IsKeyDown(Keys.W))
                 {
-                    Player2.SetDirection(Direction.up);
+                    Player1.SetDirection(Direction.up);
                 }
                 else if (Input.IsKeyDown(Keys.S))
                 {
-                    Player2.SetDirection(Direction.down);
+                    Player1.SetDirection(Direction.down);
+                }
+            }
+            if (twoPlayer)
+            {
+                if (!controlsSwapped)
+                {
+                    if (Input.IsKeyDown(Keys.A))
+                    {
+                        Player2.SetDirection(Direction.left);
+                    }
+                    else if (Input.IsKeyDown(Keys.D))
+                    {
+                        Player2.SetDirection(Direction.right);
+                    }
+                    else if (Input.IsKeyDown(Keys.W))
+                    {
+                        Player2.SetDirection(Direction.up);
+                    }
+                    else if (Input.IsKeyDown(Keys.S))
+                    {
+                        Player2.SetDirection(Direction.down);
+                    }
+                }
+                else
+                {
+                    if (Input.IsKeyDown(Keys.Left))
+                    {
+                        Player2.SetDirection(Direction.left);
+                    }
+                    else if (Input.IsKeyDown(Keys.Right))
+                    {
+                        Player2.SetDirection(Direction.right);
+                    }
+                    else if (Input.IsKeyDown(Keys.Up))
+                    {
+                        Player2.SetDirection(Direction.up);
+                    }
+                    else if (Input.IsKeyDown(Keys.Down))
+                    {
+                        Player2.SetDirection(Direction.down);
+                    }
                 }
                 Player2.MovePlayer();
             }
