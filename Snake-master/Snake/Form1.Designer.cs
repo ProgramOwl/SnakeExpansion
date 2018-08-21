@@ -38,6 +38,8 @@
             this.Score2Label = new System.Windows.Forms.Label();
             this.Score2TxtBox = new System.Windows.Forms.TextBox();
             this.Player2Label = new System.Windows.Forms.Label();
+            this.ToggleGrid = new System.Windows.Forms.CheckBox();
+            this.Ctrl_Toggle = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.GameCanvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -129,11 +131,32 @@
             this.Player2Label.TabIndex = 7;
             this.Player2Label.Text = "Player 2";
             // 
+            // ToggleGrid
+            // 
+            this.ToggleGrid.AutoSize = true;
+            this.ToggleGrid.Location = new System.Drawing.Point(1025, 150);
+            this.ToggleGrid.Name = "ToggleGrid";
+            this.ToggleGrid.Size = new System.Drawing.Size(140, 29);
+            this.ToggleGrid.TabIndex = 8;
+            this.ToggleGrid.Text = "Toggle Grid";
+            this.ToggleGrid.UseVisualStyleBackColor = true;
+            // 
+            // Ctrl_Toggle
+            // 
+            this.Ctrl_Toggle.Location = new System.Drawing.Point(1016, 204);
+            this.Ctrl_Toggle.Name = "Ctrl_Toggle";
+            this.Ctrl_Toggle.Size = new System.Drawing.Size(376, 42);
+            this.Ctrl_Toggle.TabIndex = 9;
+            this.Ctrl_Toggle.Text = "Control Toggle";
+            this.Ctrl_Toggle.UseVisualStyleBackColor = true;
+            // 
             // SnakeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1414, 764);
+            this.Controls.Add(this.Ctrl_Toggle);
+            this.Controls.Add(this.ToggleGrid);
             this.Controls.Add(this.Player2Label);
             this.Controls.Add(this.Score2Label);
             this.Controls.Add(this.Score2TxtBox);
@@ -163,6 +186,9 @@
         private System.Windows.Forms.Label Score2Label;
         private System.Windows.Forms.TextBox Score2TxtBox;
         private System.Windows.Forms.Label Player2Label;
+        private System.Windows.Forms.CheckBox ToggleGrid;
+        private System.Windows.Forms.Button Ctrl_Toggle;
+
         //end
     }
 }
