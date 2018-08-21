@@ -18,7 +18,7 @@ namespace Snake
         Random r = new Random();
         private int score = 0;
         Graphics canvas;
-
+        bool gridVisible = false;
         //Feel free to delete this boolean and replace it with controlsSwapped. Just used to test out the btn click method.
         bool test = false;
 
@@ -170,7 +170,7 @@ namespace Snake
 
         private void ToggleGrid_CheckedChanged(object sender, EventArgs e)
         {
-            
+            gridVisible = !gridVisible;
         }
 
         private void Ctrl_Toggle_Click(object sender, EventArgs e)
