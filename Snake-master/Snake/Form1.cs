@@ -522,8 +522,7 @@ namespace Snake
                     MessageBox.Show("This is a dark path you are on");
                     //TODO Bob : Maybe make the canvas go dark?
                     //apply a background to the grid (I suggest a bool for state( if bright or dark)
-                    //when they hit this make the background black, the grid lines white, 
-                    //and set the skin of snake one to white if black, and update ColorSets[0,0] to white
+                    //when they hit this make the background black, the grid lines white
                     //if the hit this again then make it back to light (change the message in the message box accordingly
                     break;
                 case 2:
