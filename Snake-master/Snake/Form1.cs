@@ -43,10 +43,19 @@ namespace Snake
         SnakePlayer Player1;
         FoodManager FoodMngr;
         Random r = new Random();
-
+        private void PauseTimer_Tick(object sender, EventArgs e)
+        {
+            if (Input.IsKeyDown(Keys.P))
+            {
+                ToggleTimer();
+            }
+        }
         public SnakeForm(Startscreen menu, bool twoPlayer)
         {
+            PauseTimer = new Timer();
             InitializeComponent();
+            PauseTimer.Tick += PauseTimer_Tick;
+            PauseTimer.Start();
             Application.AddMessageFilter(this);
             this.FormClosed += (s, e) => Application.RemoveMessageFilter(this);
             //Sam
@@ -131,7 +140,8 @@ namespace Snake
         {
             //Game Over Due to Collision
             ToggleTimer(); // No timer visible on game-over screen
-            if (MessageBox.Show(CollisionMessage + " - GAME OVER \nDo you want to play again?", "Snake Game",
+            PauseTimer.Stop();
+            if(MessageBox.Show(CollisionMessage + " - GAME OVER \nDo you want to play again?", "Snake Game", 
                 MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 ResetGame();
@@ -163,6 +173,7 @@ namespace Snake
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            
             if (msg.Msg == 0x100) //KeyDown
                 Input.SetKey((Keys)msg.WParam, true);
             return base.ProcessCmdKey(ref msg, keyData);
@@ -170,6 +181,7 @@ namespace Snake
 
         private void GameCanvas_Paint(object sender, PaintEventArgs e)
         {
+            
             Graphics canvas = e.Graphics;
             if (gridVisible)
             {
@@ -183,6 +195,7 @@ namespace Snake
             }
             //end
             FoodMngr.Draw(canvas);
+            
         }
 
         private void CheckForCollisions()
@@ -413,7 +426,8 @@ namespace Snake
 
         private void SetPlayerMovement()
         {
-            if (!controlsSwapped)
+            
+            if (!twoPlayer)
             {
                 if (Input.IsKeyDown(Keys.Left))
                 {
@@ -499,7 +513,8 @@ namespace Snake
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            SetPlayerMovement();
+            
+            SetPlayerMovement(false, is2Player);
             CheckForCollisions();
             GameCanvas.Invalidate();
         }
