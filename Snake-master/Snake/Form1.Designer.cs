@@ -189,11 +189,9 @@
             // 
             // skin2comboBox
             // 
-            this.skin2comboBox.FormattingEnabled = true;
-            this.skin2comboBox.Items.AddRange(new object[] {
-            "Blue",
-            "Peach",
-            "Green"});
+            this.skin2comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.skin2comboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.skin2comboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox_DrawItem);
             this.skin2comboBox.Location = new System.Drawing.Point(1096, 539);
             this.skin2comboBox.Name = "skin2comboBox";
             this.skin2comboBox.Size = new System.Drawing.Size(292, 32);
@@ -202,10 +200,9 @@
             // 
             // skin1comboBox
             // 
-            this.skin1comboBox.Items.AddRange(new object[] {
-            "Black",
-            "Lavendar",
-            "Misty Rose"});
+            this.skin1comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.skin1comboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.skin1comboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox_DrawItem);
             this.skin1comboBox.Location = new System.Drawing.Point(1096, 346);
             this.skin1comboBox.Name = "skin1comboBox";
             this.skin1comboBox.Size = new System.Drawing.Size(292, 32);

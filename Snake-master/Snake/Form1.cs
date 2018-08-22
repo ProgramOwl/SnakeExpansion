@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Collections;
+using System.Reflection;
 
 namespace Snake
 {
@@ -16,31 +18,72 @@ namespace Snake
         /*Sam*/
         //Next step in the future would be to have the game build based on the number of players passed in through a series of arrays
         //TODO : 
-        //-add spawn location system, 
-        //-Have a Player2 score display
         //-test that current code works (would need to add p2 controls though)
         //^use to build Unit Tests (-check that Snake head is correctly Identified, -check that the rectangles are accuratly being compared)
 
-        Brush[,] ColorSets = new Brush[2, 3];
+        //
+        // Color Selections setup
+        //
         private void BuildBrush()
         {
-            ColorSets[0, 0] = Brushes.Black;
-            ColorSets[0, 1] = Brushes.Lavender;
-            ColorSets[0, 2] = Brushes.MistyRose;
+            ArrayList ColorList = new ArrayList();
+            Type colorType = typeof(System.Drawing.Color);
+            PropertyInfo[] propInfoList = colorType.GetProperties(BindingFlags.Static |
+                                          BindingFlags.DeclaredOnly | BindingFlags.Public);
 
-            ColorSets[1, 0] = Brushes.CornflowerBlue;
-            ColorSets[1, 1] = Brushes.PeachPuff;
-            ColorSets[1, 2] = Brushes.LawnGreen;
+            int numOfPayers = (is2Player ? 2 : 1);
+            int count = (int)((propInfoList.Length-1) / numOfPayers);
+            int ind = 1;
+
+            for (int i = 0; i < count; i++)
+            {
+                this.skin1comboBox.Items.Add(propInfoList[ind].Name);
+                ind++;
+                if (is2Player)
+                {
+                    this.skin2comboBox.Items.Add(propInfoList[ind].Name);
+                    ind++;
+                }
+            }
+            
+            skin1comboBox.SelectedIndex = 0;
+            if (is2Player)
+            {
+                skin2comboBox.SelectedIndex = 0;
+            }
         }
-        SnakePlayer Player2;
-        public bool is2Player = false;
-        Startscreen mainmenu;
-        //private void ColorChange(), posible function for board update when color gets changed
-        /*end*/
+        //
+        // Color Selections display styling
+        //
+        private void comboBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = e.Bounds;
+            if (e.Index >= 0)
+            {
+                string n = ((ComboBox)sender).Items[e.Index].ToString();
+                Brush b = new SolidBrush(Color.FromName(n));
 
+                Font f = new Font("Cambria", 10, FontStyle.Regular);
+                g.DrawString(n, f, Brushes.Black, rect.X + 22, rect.Top+1);
+                g.FillRectangle(b, rect.X, rect.Y, 20, rect.Height);
+                //g.DrawRectangle(penB, rect.X, rect.Y, rect.Width-1, rect.Height - 1);
+            }
+        }
+
+        //parent access for termination of program and return to menu
+        Startscreen mainmenu;
+        //black pen used for drawing the borders in the comboBox Items
+        Pen penB = new Pen(Brushes.Black); 
+        //game states
+        bool is2Player = false;
         bool controlsSwapped = false;
         bool gridVisible = false;
+        bool gameHasEnded = false;
+        //players
         SnakePlayer Player1;
+        SnakePlayer Player2;
+        //food
         FoodManager FoodMngr;
         Random r = new Random();
 
@@ -49,48 +92,38 @@ namespace Snake
             InitializeComponent();
             Application.AddMessageFilter(this);
             this.FormClosed += (s, e) => Application.RemoveMessageFilter(this);
-            //Sam
-            BuildBrush();
-            mainmenu = menu;
-            is2Player = twoPlayer;
-            skin1comboBox.SelectedIndex = 0;
-            skin2comboBox.SelectedIndex = 0;
 
+            //set link to form's parent
+            mainmenu = menu;
+            //update the game's player state
+            is2Player = twoPlayer;
+            //set the name of the current Game window
+            this.Text = "Welcome to Snake: " + (is2Player?"Two":"Single") + " Player Mode";
+            //set the brush visuals
+            BuildBrush();
+            //Build Players and update the visuals
             SnakeSetup();
             DisplaySetup();
-            //end
+            
+            //Food initialization and execution
             FoodMngr = new FoodManager(GameCanvas.Width, GameCanvas.Height);
             FoodMngr.AddRandomFood(10);
 
+            //apply exit message
             this.FormClosing += SnakeForm1_FormClosing;
         }
 
         private void SnakeSetup()
         {
-            //Brush x = Player1.GetColor();
-            //Player1 = new SnakePlayer(this, 80, 20, Direction.right);
-            //Player1.SetColor(x);
-            //ScoreTxtBox.Text = Player1.GetScore().ToString();
-
-            //if (is2Player)
-            //{
-            //    x = Player2.GetColor();
-            //    Player2 = new SnakePlayer(this, 20, 80, Direction.down);
-            //    Player2.SetColor(x);
-            //    //Score2TxtBox.Text = (Player2.get_points()).ToString();
-            //}
-
             Player1 = new SnakePlayer(this, 80, 20, Direction.right);
             ScoreTxtBox.Text = Player1.GetScore().ToString();
-            int col = skin1comboBox.SelectedIndex;
-            Player1.SetColor(ColorSets[0, col]);
+            setSkin(skin1comboBox, Player1);
 
             if (is2Player)
             {
                 Player2 = new SnakePlayer(this, 20, 80, Direction.down);
                 Score2TxtBox.Text = Player2.GetScore().ToString();
-                int col2 = skin2comboBox.SelectedIndex;
-                Player2.SetColor(ColorSets[1, col2]);
+                setSkin(skin2comboBox, Player2);
             }
         }
        
@@ -112,11 +145,24 @@ namespace Snake
 
         private void SnakeForm1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Do you want to return to the main menu?", "Snake Game", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            //make current game pause
+            // TODO
+            //send message box
+            DialogResult result = MessageBox.Show("Do you want to return to the main menu?", "Snake Game", MessageBoxButtons.YesNoCancel);
+            if (result == DialogResult.Yes)
             {
                 mainmenu.Show();
             }
-            else
+            else if (result == DialogResult.Cancel)
+            {
+                //remove message and return to game
+                e.Cancel = true;
+                if (gameHasEnded)
+                {
+                    ResetGame();
+                }
+            }
+            else if (result == DialogResult.No)
             {
                 mainmenu.subExit();
             }
@@ -129,6 +175,7 @@ namespace Snake
 
         public void GameHasEnded(String CollisionMessage)
         {
+            gameHasEnded = true;
             //Game Over Due to Collision
             ToggleTimer(); // No timer visible on game-over screen
             if (MessageBox.Show(CollisionMessage + " - GAME OVER \nDo you want to play again?", "Snake Game",
@@ -146,6 +193,7 @@ namespace Snake
 
         public void ResetGame()
         {
+            gameHasEnded = false;
             //Sam           
             SnakeSetup();
             //end
@@ -187,7 +235,6 @@ namespace Snake
 
         private void CheckForCollisions()
         {
-            //Sam
             if (is2Player)
             {
                 if (SnakeWithSnakeCollision())
@@ -217,10 +264,9 @@ namespace Snake
                 else if (CheckForFoodCollision(Player1))
                     ScoreTxtBox.Text = Player1.GetScore().ToString();
             }
-            //end
         }
 
-        //Sam: Collision Checking Methods
+        //Collision Check Methods
         /*
             if (Player1.IsIntersectingRect(new Rectangle(-100, 0, 100, GameCanvas.Height)))
                 Player1.OnHitWall(Direction.left);
@@ -397,8 +443,6 @@ namespace Snake
             return hitFood;
         }
 
-        //end
-
         //controls
         private void Ctrl_Toggle_Click(object sender, EventArgs e)
         {
@@ -511,7 +555,6 @@ namespace Snake
 
         private void DareBtn_Click(object sender, EventArgs e)
         {
-            //TODO : maybe remove or make invalid after a set number of press or while game is paused?
             int index = r.Next(4);
             switch (index)
             {
@@ -523,7 +566,7 @@ namespace Snake
                     //TODO Bob : Maybe make the canvas go dark?
                     //apply a background to the grid (I suggest a bool for state( if bright or dark)
                     //when they hit this make the background black, the grid lines white, 
-                    //and set the skin of snake one to white if black, and update ColorSets[0,0] to white
+                    //Not Required: set the skin of snake one to white if black, and update ColorSets[0,0] to white
                     //if the hit this again then make it back to light (change the message in the message box accordingly
                     break;
                 case 2:
@@ -561,20 +604,27 @@ namespace Snake
             }
         }
 
+        //Snake skin setting
         private void skin1comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int col = skin1comboBox.SelectedIndex;
-            if(Player1 != null)
-                Player1.SetColor(ColorSets[0, col]);
-            GameCanvas.Invalidate();
+            setSkin((ComboBox)sender, Player1);
         }
-
         private void skin2comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int col = skin2comboBox.SelectedIndex;
-            if (Player2 != null)
-                Player2.SetColor(ColorSets[1, col]);
-            GameCanvas.Invalidate();
+            setSkin((ComboBox)sender, Player2);
+        }
+
+        //shouldn't get out of range but easy fix by adding a range max limit
+        private void setSkin(ComboBox sender, SnakePlayer sp)
+        {
+            if (sp != null)
+            {
+                int col = sender.SelectedIndex;
+                string n = sender.Items[(col>=0?col:0)].ToString();
+                Brush b = new SolidBrush(Color.FromName(n));
+                sp.SetColor(b);
+                GameCanvas.Invalidate();
+            }
         }
     }
 }
