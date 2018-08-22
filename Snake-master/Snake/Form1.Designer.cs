@@ -235,16 +235,17 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "SnakeForm";
             this.Text = "Snake";
+            //this.Load += new System.EventHandler(this.SnakeForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.GameCanvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
 
         private System.Windows.Forms.PictureBox GameCanvas;
         private System.Windows.Forms.Timer GameTimer;
+        private System.Windows.Forms.Timer PauseTimer;
         private System.Windows.Forms.Button Start_Btn;
         private System.Windows.Forms.Button DareBtn;
         private System.Windows.Forms.TextBox ScoreTxtBox;
