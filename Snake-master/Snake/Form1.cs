@@ -161,6 +161,7 @@ namespace Snake
             //make current game pause
             // TODO
             GameTimer.Enabled = false;
+            gameInAction = false;
             //send message box
             DialogResult result = MessageBox.Show("Do you want to return to the main menu?", "Snake Game", MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Yes)
@@ -188,6 +189,7 @@ namespace Snake
             gameHasEnded = true;
             //Game Over Due to Collision
             GameTimer.Enabled = false;
+            gameInAction = false;
             //ToggleTimer(); // No timer visible on game-over screen
             //xxx
             //PauseTimer.Stop();
@@ -209,6 +211,7 @@ namespace Snake
         {
             gameHasEnded = false;
             GameTimer.Enabled = true;
+            gameInAction = false;
             SnakeSetup();
 
             FoodMngr = new FoodManager(GameCanvas.Width, GameCanvas.Height);
