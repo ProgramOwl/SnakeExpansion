@@ -31,6 +31,7 @@ namespace Snake
             PropertyInfo[] propInfoList = colorType.GetProperties(BindingFlags.Static |
                                           BindingFlags.DeclaredOnly | BindingFlags.Public);
 
+            
             int numOfPayers = (is2Player ? 2 : 1);
             int count = (int)((propInfoList.Length-1) / numOfPayers);
             int ind = 1;
@@ -65,7 +66,7 @@ namespace Snake
                 Brush b = new SolidBrush(Color.FromName(n));
 
                 Font f = new Font("Cambria", 10, FontStyle.Regular);
-                g.DrawString(n, f, Brushes.Black, rect.X + 22, rect.Top+1);
+                g.DrawString(n, f, Brushes.Black, rect.X + 22, rect.Top);
                 g.FillRectangle(b, rect.X, rect.Y, 20, rect.Height);
                 //g.DrawRectangle(penB, rect.X, rect.Y, rect.Width-1, rect.Height - 1);
             }
@@ -80,18 +81,26 @@ namespace Snake
         bool controlsSwapped = false;
         bool gridVisible = false;
         bool gameHasEnded = false;
+        bool gameInAction = false;
         //players
         SnakePlayer Player1;
         SnakePlayer Player2;
         //food
         FoodManager FoodMngr;
         Random r = new Random();
-
+        
         public SnakeForm(Startscreen menu, bool twoPlayer)
         {
             InitializeComponent();
+
+            //xxx
+            //PauseTimer = new Timer();
+            //PauseTimer.Tick += PauseTimer_Tick;
+            //PauseTimer.Start();
+
             Application.AddMessageFilter(this);
             this.FormClosed += (s, e) => Application.RemoveMessageFilter(this);
+           
 
             //set link to form's parent
             mainmenu = menu;
@@ -111,6 +120,10 @@ namespace Snake
 
             //apply exit message
             this.FormClosing += SnakeForm1_FormClosing;
+
+            //initial start
+            CheckForCollisions();
+            GameTimer.Enabled = true;
         }
 
         private void SnakeSetup()
@@ -147,6 +160,7 @@ namespace Snake
         {
             //make current game pause
             // TODO
+            GameTimer.Enabled = false;
             //send message box
             DialogResult result = MessageBox.Show("Do you want to return to the main menu?", "Snake Game", MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Yes)
@@ -157,6 +171,7 @@ namespace Snake
             {
                 //remove message and return to game
                 e.Cancel = true;
+                GameTimer.Enabled = true;
                 if (gameHasEnded)
                 {
                     ResetGame();
@@ -168,17 +183,16 @@ namespace Snake
             }
         }
 
-        public void ToggleTimer()
-        {
-            GameTimer.Enabled = !GameTimer.Enabled;
-        }
-
         public void GameHasEnded(String CollisionMessage)
         {
             gameHasEnded = true;
             //Game Over Due to Collision
-            ToggleTimer(); // No timer visible on game-over screen
-            if (MessageBox.Show(CollisionMessage + " - GAME OVER \nDo you want to play again?", "Snake Game",
+            GameTimer.Enabled = false;
+            //ToggleTimer(); // No timer visible on game-over screen
+            //xxx
+            //PauseTimer.Stop();
+
+            if (MessageBox.Show(CollisionMessage + " - GAME OVER \nDo you want to play again?", "Snake Game", 
                 MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 ResetGame();
@@ -194,11 +208,12 @@ namespace Snake
         public void ResetGame()
         {
             gameHasEnded = false;
-            //Sam           
+            GameTimer.Enabled = true;
             SnakeSetup();
-            //end
+
             FoodMngr = new FoodManager(GameCanvas.Width, GameCanvas.Height);
             FoodMngr.AddRandomFood(10);
+
             DisplaySetup();
         }
 
@@ -211,26 +226,26 @@ namespace Snake
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            
             if (msg.Msg == 0x100) //KeyDown
                 Input.SetKey((Keys)msg.WParam, true);
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void GameCanvas_Paint(object sender, PaintEventArgs e)
-        {
+        {            
             Graphics canvas = e.Graphics;
             if (gridVisible)
             {
                 Grid_Paint(canvas, 100);
             }
             Player1.Draw(canvas);
-            //Sam
+
             if (is2Player)
             {
                 Player2.Draw(canvas);
             }
-            //end
-            FoodMngr.Draw(canvas);
+            FoodMngr.Draw(canvas);            
         }
 
         private void CheckForCollisions()
@@ -543,15 +558,37 @@ namespace Snake
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            SetPlayerMovement();
-            CheckForCollisions();
-            GameCanvas.Invalidate();
+            if (Input.IsKeyDown(Keys.P))
+            {
+                ToggleGame();
+            }
+            if (gameInAction)
+            {
+                SetPlayerMovement();
+                CheckForCollisions();
+                GameCanvas.Invalidate();
+            }
         }
 
         private void Start_Btn_Click(object sender, EventArgs e)
         {
-            ToggleTimer();
+            ToggleGame();
         }
+        public void ToggleGame()
+        {
+            gameInAction = !gameInAction;
+            //change the button text
+            //and apply disabling
+        }
+
+        //private void PauseTimer_Tick(object sender, EventArgs e)
+        //{
+        //    if (Input.IsKeyDown(Keys.P))
+        //    {
+        //        gameInAction = !gameInAction;
+        //        ToggleTimer();
+        //    }
+        //}
 
         private void DareBtn_Click(object sender, EventArgs e)
         {
@@ -566,7 +603,6 @@ namespace Snake
                     //TODO Bob : Maybe make the canvas go dark?
                     //apply a background to the grid (I suggest a bool for state( if bright or dark)
                     //when they hit this make the background black, the grid lines white, 
-                    //Not Required: set the skin of snake one to white if black, and update ColorSets[0,0] to white
                     //if the hit this again then make it back to light (change the message in the message box accordingly
                     break;
                 case 2:
