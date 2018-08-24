@@ -124,6 +124,7 @@ namespace Snake
             //initial start
             CheckForCollisions();
             GameTimer.Enabled = true;
+            
         }
 
         private void SnakeSetup()
@@ -577,8 +578,19 @@ namespace Snake
         public void ToggleGame()
         {
             gameInAction = !gameInAction;
-            //change the button text
-            //and apply disabling
+            if (gameInAction)
+            {
+                this.Ctrl_Toggle.Enabled = false;
+                this.skin1comboBox.Enabled = false;
+                this.skin2comboBox.Enabled = false;
+                this.Start_Btn.Text = "Pause";
+            }
+            else{
+                this.Ctrl_Toggle.Enabled = true;
+                this.skin1comboBox.Enabled = true;
+                this.skin2comboBox.Enabled = true;
+                this.Start_Btn.Text = "Start";
+            }
         }
 
         //private void PauseTimer_Tick(object sender, EventArgs e)
