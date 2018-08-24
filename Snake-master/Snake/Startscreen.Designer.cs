@@ -60,7 +60,7 @@
             this.Controls.Add(this.btn2Player);
             this.Controls.Add(this.btn1Player);
             this.Name = "Startscreen";
-            this.Text = "Startscreen";
+            this.Text = "Game of Snake";
             this.Load += new System.EventHandler(this.Startscreen_Load);
             this.ResumeLayout(false);
 
