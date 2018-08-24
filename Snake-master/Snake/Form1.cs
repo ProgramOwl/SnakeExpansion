@@ -80,7 +80,6 @@ namespace Snake
         bool is2Player = false;
         bool controlsSwapped = false;
         bool gridVisible = false;
-        bool gridInversed = false;
         bool gameHasEnded = false;
         bool gameInAction = false;
         //players
@@ -163,7 +162,6 @@ namespace Snake
             //make current game pause
             // TODO
             GameTimer.Enabled = false;
-            gameInAction = false;
             //send message box
             DialogResult result = MessageBox.Show("Do you want to return to the main menu?", "Snake Game", MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Yes)
@@ -191,7 +189,6 @@ namespace Snake
             gameHasEnded = true;
             //Game Over Due to Collision
             GameTimer.Enabled = false;
-            gameInAction = false;
             //ToggleTimer(); // No timer visible on game-over screen
             //xxx
             //PauseTimer.Stop();
@@ -213,7 +210,6 @@ namespace Snake
         {
             gameHasEnded = false;
             GameTimer.Enabled = true;
-            gameInAction = false;
             SnakeSetup();
 
             FoodMngr = new FoodManager(GameCanvas.Width, GameCanvas.Height);
@@ -242,7 +238,7 @@ namespace Snake
             Graphics canvas = e.Graphics;
             if (gridVisible)
             {
-                Grid_Paint(canvas, 50);
+                Grid_Paint(canvas, 100);
             }
             Player1.Draw(canvas);
 
@@ -587,12 +583,14 @@ namespace Snake
                 this.Ctrl_Toggle.Enabled = false;
                 this.skin1comboBox.Enabled = false;
                 this.skin2comboBox.Enabled = false;
+                this.ToggleGrid.Enabled = false;
                 this.Start_Btn.Text = "Pause";
             }
             else{
                 this.Ctrl_Toggle.Enabled = true;
                 this.skin1comboBox.Enabled = true;
                 this.skin2comboBox.Enabled = true;
+                this.ToggleGrid.Enabled = true;
                 this.Start_Btn.Text = "Start";
             }
         }
@@ -620,16 +618,6 @@ namespace Snake
                     //apply a background to the grid (I suggest a bool for state( if bright or dark)
                     //when they hit this make the background black, the grid lines white, 
                     //if the hit this again then make it back to light (change the message in the message box accordingly
-                    gridInversed = !gridInversed;
-                    if (GameCanvas.BackColor == Color.FromArgb(224, 224, 224))
-                    {
-                        GameCanvas.BackColor = Color.Black;
-
-                    } else if (GameCanvas.BackColor == Color.Black)
-                    {
-                        GameCanvas.BackColor = Color.FromArgb(224,224,224);
-                    }
-                    GameCanvas.Invalidate();
                     break;
                 case 2:
                     MessageBox.Show("I knew you wouldn't listen");
@@ -652,8 +640,8 @@ namespace Snake
         }
         private void Grid_Paint(Graphics canv, int cells)
         {
-            Pen p = gridInversed ? new Pen(Color.White) : new Pen(Color.Black);
             int cellSize = 20;
+            Pen p = new Pen(Color.Black);
 
             for (int y = 0; y < cells; ++y)
             {
