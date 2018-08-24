@@ -20,6 +20,8 @@ namespace Snake
         //TODO : 
         //-test that current code works (would need to add p2 controls though)
         //^use to build Unit Tests (-check that Snake head is correctly Identified, -check that the rectangles are accuratly being compared)
+        //re enable and paause game upon restart
+        //test the cancle
 
         //
         // Color Selections setup
