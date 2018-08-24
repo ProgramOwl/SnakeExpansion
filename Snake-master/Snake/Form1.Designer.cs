@@ -70,7 +70,8 @@
             this.Start_Btn.Margin = new System.Windows.Forms.Padding(6);
             this.Start_Btn.Name = "Start_Btn";
             this.Start_Btn.Size = new System.Drawing.Size(376, 42);
-            this.Start_Btn.TabIndex = 1;
+            this.Start_Btn.TabIndex = 0;
+            this.Start_Btn.TabStop = false;
             this.Start_Btn.Text = "Start/Pause";
             this.Start_Btn.UseVisualStyleBackColor = true;
             this.Start_Btn.Click += new System.EventHandler(this.Start_Btn_Click);
@@ -81,7 +82,8 @@
             this.DareBtn.Margin = new System.Windows.Forms.Padding(6);
             this.DareBtn.Name = "DareBtn";
             this.DareBtn.Size = new System.Drawing.Size(378, 42);
-            this.DareBtn.TabIndex = 2;
+            this.DareBtn.TabIndex = 0;
+            this.DareBtn.TabStop = false;
             this.DareBtn.Text = "I Dare You To Press Me";
             this.DareBtn.UseVisualStyleBackColor = true;
             this.DareBtn.Click += new System.EventHandler(this.DareBtn_Click);
@@ -152,7 +154,8 @@
             this.Ctrl_Toggle.Location = new System.Drawing.Point(1016, 86);
             this.Ctrl_Toggle.Name = "Ctrl_Toggle";
             this.Ctrl_Toggle.Size = new System.Drawing.Size(376, 42);
-            this.Ctrl_Toggle.TabIndex = 9;
+            this.Ctrl_Toggle.TabIndex = 0;
+            this.Ctrl_Toggle.TabStop = false;
             this.Ctrl_Toggle.Text = "Controls: Arrows";
             this.Ctrl_Toggle.UseVisualStyleBackColor = true;
             this.Ctrl_Toggle.Click += new System.EventHandler(this.Ctrl_Toggle_Click);
@@ -189,24 +192,25 @@
             // 
             // skin2comboBox
             // 
-            this.skin2comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.skin2comboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.skin2comboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox_DrawItem);
+            this.skin2comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.skin2comboBox.Location = new System.Drawing.Point(1096, 539);
             this.skin2comboBox.Name = "skin2comboBox";
-            this.skin2comboBox.Size = new System.Drawing.Size(292, 32);
-            this.skin2comboBox.TabIndex = 13;
+            this.skin2comboBox.Size = new System.Drawing.Size(292, 30);
+            this.skin2comboBox.TabIndex = 0;
+            this.skin2comboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox_DrawItem);
             this.skin2comboBox.SelectedIndexChanged += new System.EventHandler(this.skin2comboBox_SelectedIndexChanged);
             // 
             // skin1comboBox
             // 
-            this.skin1comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.skin1comboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.skin1comboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox_DrawItem);
+            this.skin1comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.skin1comboBox.Location = new System.Drawing.Point(1096, 346);
             this.skin1comboBox.Name = "skin1comboBox";
-            this.skin1comboBox.Size = new System.Drawing.Size(292, 32);
-            this.skin1comboBox.TabIndex = 14;
+            this.skin1comboBox.Size = new System.Drawing.Size(292, 30);
+            this.skin1comboBox.TabIndex = 0;
+            this.skin1comboBox.TabStop = false;
+            this.skin1comboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox_DrawItem);
             this.skin1comboBox.SelectedIndexChanged += new System.EventHandler(this.skin1comboBox_SelectedIndexChanged);
             // 
             // SnakeForm
@@ -232,10 +236,10 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "SnakeForm";
             this.Text = "Snake";
-            //this.Load += new System.EventHandler(this.SnakeForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.GameCanvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
