@@ -174,6 +174,8 @@ namespace Snake
             {
                 //remove message and return to game
                 e.Cancel = true;
+                gameInAction = true;
+                ToggleGame();
                 GameTimer.Enabled = true;
                 if (gameHasEnded)
                 {
@@ -211,13 +213,15 @@ namespace Snake
         public void ResetGame()
         {
             gameHasEnded = false;
-            GameTimer.Enabled = true;
+            gameInAction = true;
+            ToggleGame();
             SnakeSetup();
 
             FoodMngr = new FoodManager(GameCanvas.Width, GameCanvas.Height);
             FoodMngr.AddRandomFood(10);
 
             DisplaySetup();
+            GameTimer.Enabled = true;
         }
 
         public bool PreFilterMessage(ref Message msg)
