@@ -96,10 +96,11 @@ namespace Snake
             InitializeComponent();
 
             //xxx
-            //PauseTimer = new Timer();
-            //PauseTimer.Tick += PauseTimer_Tick;
-            //PauseTimer.Start();
-
+            PauseTimer = new Timer();
+            PauseTimer.Tick += PauseTimer_Tick;
+            PauseTimer.Start();
+            GameTimer = new Timer();
+            GameTimer.Tick += GameTimer_Tick;
             Application.AddMessageFilter(this);
             this.FormClosed += (s, e) => Application.RemoveMessageFilter(this);
            
@@ -125,7 +126,7 @@ namespace Snake
 
             //initial start
             CheckForCollisions();
-            GameTimer.Enabled = true;
+            //GameTimer.Enabled = true;
             
         }
 
@@ -565,10 +566,10 @@ namespace Snake
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            if (Input.IsKeyDown(Keys.P))
-            {
-                ToggleGame();
-            }
+            //if (Input.IsKeyDown(Keys.P))
+            //{
+            //    ToggleGame();                
+            //}
             if (gameInAction)
             {
                 SetPlayerMovement();
@@ -579,13 +580,14 @@ namespace Snake
 
         private void Start_Btn_Click(object sender, EventArgs e)
         {
+            gameInAction = !gameInAction;
             ToggleGame();
         }
         public void ToggleGame()
         {
-            gameInAction = !gameInAction;
             if (gameInAction)
             {
+                GameTimer.Start();
                 this.Ctrl_Toggle.Enabled = false;
                 this.skin1comboBox.Enabled = false;
                 this.skin2comboBox.Enabled = false;
@@ -593,22 +595,24 @@ namespace Snake
                 this.Start_Btn.Text = "Pause";
             }
             else{
+                GameTimer.Stop();
                 this.Ctrl_Toggle.Enabled = true;
                 this.skin1comboBox.Enabled = true;
                 this.skin2comboBox.Enabled = true;
                 this.ToggleGrid.Enabled = true;
                 this.Start_Btn.Text = "Start";
             }
+            
         }
 
-        //private void PauseTimer_Tick(object sender, EventArgs e)
-        //{
-        //    if (Input.IsKeyDown(Keys.P))
-        //    {
-        //        gameInAction = !gameInAction;
-        //        ToggleTimer();
-        //    }
-        //}
+        private void PauseTimer_Tick(object sender, EventArgs e)
+        {
+            if (Input.IsKeyDown(Keys.P))
+            {
+                gameInAction = !gameInAction;
+                ToggleGame();
+            }
+        }
 
         private void DareBtn_Click(object sender, EventArgs e)
         {
