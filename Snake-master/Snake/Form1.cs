@@ -84,12 +84,14 @@ namespace Snake
         bool gridVisible = false;
         bool gameHasEnded = false;
         bool gameInAction = false;
+        bool gridInversed = false;
         //players
         SnakePlayer Player1;
         SnakePlayer Player2;
         //food
         FoodManager FoodMngr;
         Random r = new Random();
+        //Timer PauseTimer = new Timer();
         
         public SnakeForm(Startscreen menu, bool twoPlayer)
         {
@@ -125,8 +127,17 @@ namespace Snake
 
             //initial start
             CheckForCollisions();
+
+            gameInAction = false;
+            ToggleGame();
+
+            //PauseTimer = new Timer();
+            //PauseTimer.Tick += PauseTimer_Tick;
+            //PauseTimer.Start();
+            //GameTimer = new Timer();
+            //GameTimer.Tick += GameTimer_Tick;
             GameTimer.Enabled = true;
-            
+
         }
 
         private void SnakeSetup()
@@ -163,8 +174,14 @@ namespace Snake
         {
             //make current game pause
             // TODO
-            GameTimer.Enabled = false;
+            //GameTimer.Enabled = false;
             //send message box
+            
+            gameInAction = false;
+            ToggleGame();
+
+            //PauseTimer.Enabled = false;
+
             DialogResult result = MessageBox.Show("Do you want to return to the main menu?", "Snake Game", MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Yes)
             {
@@ -174,9 +191,7 @@ namespace Snake
             {
                 //remove message and return to game
                 e.Cancel = true;
-                gameInAction = true;
-                ToggleGame();
-                GameTimer.Enabled = true;
+                //GameTimer.Enabled = true;
                 if (gameHasEnded)
                 {
                     ResetGame();
@@ -192,10 +207,13 @@ namespace Snake
         {
             gameHasEnded = true;
             //Game Over Due to Collision
-            GameTimer.Enabled = false;
+            //GameTimer.Enabled = false;
+            gameInAction = false;
+            ToggleGame();
             //ToggleTimer(); // No timer visible on game-over screen
             //xxx
             //PauseTimer.Stop();
+            //PauseTimer.Enabled = false;
 
             if (MessageBox.Show(CollisionMessage + " - GAME OVER \nDo you want to play again?", "Snake Game", 
                 MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -212,8 +230,9 @@ namespace Snake
 
         public void ResetGame()
         {
+            //PauseTimer.Enabled = true;
             gameHasEnded = false;
-            gameInAction = true;
+            gameInAction = false;
             ToggleGame();
             SnakeSetup();
 
@@ -221,7 +240,7 @@ namespace Snake
             FoodMngr.AddRandomFood(10);
 
             DisplaySetup();
-            GameTimer.Enabled = true;
+            //GameTimer.Enabled = true;
         }
 
         public bool PreFilterMessage(ref Message msg)
@@ -478,7 +497,7 @@ namespace Snake
         }
 
         private void SetPlayerMovement()
-        {
+        {            
             if (!controlsSwapped)
             {
                 if (Input.IsKeyDown(Keys.Left))
@@ -563,52 +582,102 @@ namespace Snake
             Player1.MovePlayer();
         }
 
+        //int ticks = 0;
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            if (Input.IsKeyDown(Keys.P))
-            {
-                ToggleGame();
-            }
+            //ticks = (ticks == 0 ? 0 : (ticks - 1));
+            //if (Input.IsKeyDown(Keys.P))
+            //{
+            //    ToggleGame();
+            //}
+
             if (gameInAction)
             {
                 SetPlayerMovement();
                 CheckForCollisions();
                 GameCanvas.Invalidate();
             }
+            //else if (Input.IsKeyDown(Keys.P) && !gameHasEnded)
+            //{
+            //    gameInAction = !gameInAction;
+            //    ToggleGame();
+            //    //ToggleTimer();
+            //}
         }
 
         private void Start_Btn_Click(object sender, EventArgs e)
         {
+            //if (!Input.IsKeyDown(Keys.P))
+            //{
+            gameInAction = !gameInAction;
             ToggleGame();
+            //}
+            //else
+            //{
+                //ticks = (ticks == 0 ? 0 : (ticks - 1));
+            //}
+            //ToggleGame();
         }
         public void ToggleGame()
         {
-            gameInAction = !gameInAction;
-            if (gameInAction)
-            {
-                this.Ctrl_Toggle.Enabled = false;
-                this.skin1comboBox.Enabled = false;
-                this.skin2comboBox.Enabled = false;
-                this.ToggleGrid.Enabled = false;
-                this.Start_Btn.Text = "Pause";
-            }
-            else{
-                this.Ctrl_Toggle.Enabled = true;
-                this.skin1comboBox.Enabled = true;
-                this.skin2comboBox.Enabled = true;
-                this.ToggleGrid.Enabled = true;
-                this.Start_Btn.Text = "Start";
-            }
+            //if (ticks == 0)
+            //{
+            //    ticks = 4;
+                //gameInAction = !gameInAction;
+                if (gameInAction)
+                {
+                //GameTimer.Start();
+                //PauseTimer.Enabled = false;
+                //GameTimer.Enabled = true;
+                    this.Ctrl_Toggle.Enabled = false;
+                    this.skin1comboBox.Enabled = false;
+                    this.skin2comboBox.Enabled = false;
+                    this.ToggleGrid.Enabled = false;
+                    this.DareBtn.Enabled = false;
+                    this.Start_Btn.Text = "Pause";
+                }
+                else
+                {
+                    //GameTimer.Stop();
+                    //PauseTimer.Enabled = true;
+                    //GameTimer.Enabled = false;
+                    this.Ctrl_Toggle.Enabled = true;
+                    this.skin1comboBox.Enabled = true;
+                    this.skin2comboBox.Enabled = true;
+                    this.ToggleGrid.Enabled = true;
+                    this.DareBtn.Enabled = true;
+                    this.Start_Btn.Text = "Start";
+                }
+            //}
+            //else
+            //{
+            //    ticks = (ticks == 1 ? 0 : (ticks - 1));
+            //}
+
+            //System.Threading.Thread.Sleep(2000);
         }
 
-        //private void PauseTimer_Tick(object sender, EventArgs e)
-        //{
-        //    if (Input.IsKeyDown(Keys.P))
-        //    {
-        //        gameInAction = !gameInAction;
-        //        ToggleTimer();
-        //    }
-        //}
+       
+        private void PauseTimer_Tick(object sender, EventArgs e)
+        {
+            //if (Input.IsKeyDown(Keys.P) && !gameInAction) 
+            //{
+            //    gameInAction = true;
+            //    ToggleGame();
+            //    //ToggleTimer();
+            //}
+            //System.Threading.Thread.Sleep(1000);
+            //else if (Input.IsKeyDown(Keys.O) && !gameHasEnded)
+            //{
+            //    gameInAction = true;
+            //    //ToggleGame();
+            //    //ToggleTimer();
+            //}
+            //else
+            //{
+            //    //ToggleGame();
+            //}
+        }
 
         private void DareBtn_Click(object sender, EventArgs e)
         {
@@ -619,11 +688,25 @@ namespace Snake
                     MessageBox.Show("How dare you listen");
                     break;
                 case 1:
-                    MessageBox.Show("This is a dark path you are on");
-                    //TODO Bob : Maybe make the canvas go dark?
-                    //apply a background to the grid (I suggest a bool for state( if bright or dark)
-                    //when they hit this make the background black, the grid lines white, 
-                    //if the hit this again then make it back to light (change the message in the message box accordingly
+                    if (!gridInversed)
+                    {
+                        MessageBox.Show("This is a dark path you are on");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Welcome back to the light.");
+                    }
+                    gridInversed = !gridInversed;
+                    if (GameCanvas.BackColor == Color.FromArgb(224, 224, 224))
+                    {
+                        GameCanvas.BackColor = Color.Black;
+
+                    }
+                    else if (GameCanvas.BackColor == Color.Black)
+                    {
+                        GameCanvas.BackColor = Color.FromArgb(224, 224, 224);
+                    }
+                    GameCanvas.Invalidate();
                     break;
                 case 2:
                     MessageBox.Show("I knew you wouldn't listen");
@@ -646,8 +729,8 @@ namespace Snake
         }
         private void Grid_Paint(Graphics canv, int cells)
         {
+            Pen p = (gridInversed ? new Pen(Color.White) : new Pen(Color.Black));
             int cellSize = 20;
-            Pen p = new Pen(Color.Black);
 
             for (int y = 0; y < cells; ++y)
             {
